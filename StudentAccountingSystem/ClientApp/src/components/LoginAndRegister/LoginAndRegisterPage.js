@@ -31,14 +31,11 @@ class LoginAndRegisterPage extends Component {
                             <Login/>
                             </TabPane>
                             <TabPane tab="Реєстрація" key="2">
-                               <Register/>
+                                <Register/>
                             </TabPane>
-
                         </Tabs>
                         
-
                     </Col>
-
                 </Row>
                 </React.Fragment>
 

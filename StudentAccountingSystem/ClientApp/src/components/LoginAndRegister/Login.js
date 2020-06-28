@@ -2,12 +2,17 @@ import React, { Component } from 'react';
 import { Form, Input, Button, Row } from 'antd';
 
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
+import { connect } from "react-redux";
+
+import * as loginActions from './reducer';
 
 class Login extends Component {
     state = {}
     render() {
         const onFinish = values => {
             console.log('Success:', values);
+            this.props.login(values);
+
         };
         return (
             <React.Fragment>
@@ -33,7 +38,7 @@ class Login extends Component {
                             placeholder="Password"
                         />
                     </Form.Item>
-                    <Form.Item a>
+                    <Form.Item>
                         <Row justify="space-between">
                             <Button type="primary" htmlType="submit" className="login-form-button">
                                 Вхід
@@ -48,6 +53,20 @@ class Login extends Component {
         );
     };
 }
+function mapStateToProps({loginAndRegister}) {
+    return {
+        loading: loginAndRegister.loading,
+        failed: loginAndRegister.failed,
+        success: loginAndRegister.success,
+        errors: loginAndRegister.errors,
+    }
+}
+
+  const mapDispatchToProps = {
+    login: (model) => {
+        return loginActions.login(model);
+    }
+  }
 
 
-export default Login;
+export default connect(mapStateToProps,mapDispatchToProps)(Login);

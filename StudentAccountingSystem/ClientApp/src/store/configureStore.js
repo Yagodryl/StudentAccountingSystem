@@ -2,9 +2,15 @@ import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 
+//reducers
+import {loginAndRegisterReducer} from "../components/LoginAndRegister/reducer";
+import {profileReducer} from "../components/Student/Profile/reducer";
+
+
 export default function configureStore (history, initialState) {
   const reducers = {
-
+    loginAndRegister: loginAndRegisterReducer,
+    profile :profileReducer,
   };
 
   const middleware = [

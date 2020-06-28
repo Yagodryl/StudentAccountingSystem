@@ -1,15 +1,17 @@
 import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import Layout from './Layout';
-import defaultRoutes from '../../routes/defaultRoutes';
-class DefaultLayout extends Component {
 
-    render() {
-        return (
-            <Layout>
-                <Suspense fallback={ <div>Загрузка...</div> }>
+import MainLayout from "./MainLayout";
+import studentRoutes from '../../routes/studentRoutes';
+
+
+class StudentLayout extends Component {
+    render() { 
+        return ( 
+            <MainLayout>
+                 <Suspense fallback={ <div>Загрузка...</div> }>
                     <Switch>
-                        { defaultRoutes.map((route, idx) => {
+                        { studentRoutes.map((route, idx) => {
                             return route.component ? (
                                 <Route
                                     key={ idx }
@@ -24,9 +26,9 @@ class DefaultLayout extends Component {
                         {/* <Redirect from="/" to="/login" /> */}
                     </Switch>
                 </Suspense>
-
-            </Layout>
-        );
+            </MainLayout>
+         );
     }
 }
-export default DefaultLayout;
+ 
+export default StudentLayout;

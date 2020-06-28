@@ -1,5 +1,5 @@
-import React, {Suspense, Component} from 'react';
-import DefaultLayout from "./containers/DefaultLayout";
+import React, { Suspense, Component } from 'react';
+// import DefaultLayout from "./containers/DefaultLayout";
 import { Redirect, Route, Switch } from "react-router";
 import 'antd/dist/antd.css';
 
@@ -13,6 +13,9 @@ import 'antd/dist/antd.css';
 //   </Layout>
 // );
 
+const DefaultLayout = React.lazy(()=> import("./containers/DefaultLayout"))
+const StudentLayout = React.lazy(() => import('./containers/StudentLayout'));
+
 
 class App extends Component {
 
@@ -23,20 +26,20 @@ class App extends Component {
 
   componentDidMount() {
 
-    
-  //   auth.signInAnonymously().then((snap) => {
-  //     console.log("snap App___",snap);
-  //     this.setState({ isLoading: false, isError: false });
-  //   })
-  //   .catch((err)=>{
-  //     console.log("Error App___",err)
-  //     this.setState({ isLoading: false, isError: true });
-  //   })
+
+    //   auth.signInAnonymously().then((snap) => {
+    //     console.log("snap App___",snap);
+    //     this.setState({ isLoading: false, isError: false });
+    //   })
+    //   .catch((err)=>{
+    //     console.log("Error App___",err)
+    //     this.setState({ isLoading: false, isError: true });
+    //   })
   }
 
   render() {
 
-  
+
     return (
 
       // (this.state.isLoading) ? ( <div>Загрузка...</div> ) : ( this.state.isError? <div>Error</div> :(
@@ -44,12 +47,13 @@ class App extends Component {
       <Suspense fallback={ <div>Загрузка...</div> }>
         <Switch>
 
+          <Route path="/student" name="Student" render={ props => <StudentLayout { ...props } /> } />
           <Route path="/" name="Default"
             render={ props => <DefaultLayout { ...props } /> } />
 
         </Switch>
       </Suspense>
-      )
+    )
 
 
     // );
