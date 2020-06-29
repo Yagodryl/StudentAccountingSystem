@@ -2,12 +2,13 @@ import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import Layout from './Layout';
 import defaultRoutes from '../../routes/defaultRoutes';
+import Spinner from '../../components/Spinner';
 class DefaultLayout extends Component {
 
     render() {
         return (
             <Layout>
-                <Suspense fallback={ <div>Загрузка...</div> }>
+                <Suspense fallback={ <Spinner/> }>
                     <Switch>
                         { defaultRoutes.map((route, idx) => {
                             return route.component ? (
@@ -21,7 +22,7 @@ class DefaultLayout extends Component {
                                     ) } />
                             ) : (null);
                         }) }
-                        {/* <Redirect from="/" to="/login" /> */}
+                        <Redirect from="/" to="/login" />
                     </Switch>
                 </Suspense>
 

@@ -121,6 +121,11 @@ export const login = model => {
     }
 }
 
+export function logout() {
+    return dispatch => {
+      logoutByJWT(dispatch);
+    };
+  }
 
 export const register = model => {
     return dispatch => {
@@ -193,4 +198,5 @@ export const logoutByJWT = dispatch => {
         type: LOGIN_SET_CURRENT_USER,
         user: {}
     });
+    dispatch(push('/login'));
 };

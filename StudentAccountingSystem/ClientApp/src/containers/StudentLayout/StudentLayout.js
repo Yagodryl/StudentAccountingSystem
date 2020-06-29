@@ -3,13 +3,14 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 
 import MainLayout from "./MainLayout";
 import studentRoutes from '../../routes/studentRoutes';
+import Spinner from '../../components/Spinner';
 
 
 class StudentLayout extends Component {
     render() { 
         return ( 
             <MainLayout>
-                 <Suspense fallback={ <div>Загрузка...</div> }>
+                 <Suspense fallback={ <Spinner/> }>
                     <Switch>
                         { studentRoutes.map((route, idx) => {
                             return route.component ? (
@@ -23,7 +24,7 @@ class StudentLayout extends Component {
                                     ) } />
                             ) : (null);
                         }) }
-                        {/* <Redirect from="/" to="/login" /> */}
+                        <Redirect from="/" to="/login" />
                     </Switch>
                 </Suspense>
             </MainLayout>

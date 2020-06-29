@@ -3,7 +3,7 @@ import { Form, Input, Button, Row } from 'antd';
 
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { connect } from "react-redux";
-
+import Spinner from "../Spinner";
 import * as loginActions from './reducer';
 
 class Login extends Component {
@@ -49,6 +49,7 @@ class Login extends Component {
                         </Row>
                     </Form.Item>
                 </Form>
+                {this.props.loading && <Spinner/>}
             </React.Fragment>
         );
     };

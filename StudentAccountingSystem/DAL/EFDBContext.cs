@@ -14,6 +14,9 @@ namespace StudentAccountingSystem.DAL
 
         }
         public virtual DbSet<StudentProfile> StudentProfiles { get; set; }
+        public virtual DbSet<CourseStudent> CourseStudents { get; set; }
+        public virtual DbSet<Course> Courses { get; set; }
+        public virtual DbSet<CourseDescription> CourseDescriptions { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -33,6 +36,19 @@ namespace StudentAccountingSystem.DAL
                     .WithMany(r => r.UserRoles)
                     .HasForeignKey(ur => ur.UserId)
                     .IsRequired();
+            });
+
+            builder.Entity<CourseStudent>(courseStudent =>
+            {
+                courseStudent.HasKey(cs => new { cs.CourseId, cs.StudentProfileId });
+
+                courseStudent.HasOne(cs => cs.Course)
+                    .WithMany(c => c.CourseStudents)
+                    .HasForeignKey(cs => cs.CourseId);
+
+                courseStudent.HasOne(cs => cs.StudentProfile)
+                   .WithMany(s => s.CourseStudents)
+                   .HasForeignKey(cs => cs.StudentProfileId);
             });
         }
     }

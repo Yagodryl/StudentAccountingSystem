@@ -2,6 +2,7 @@ import React, { Suspense, Component } from 'react';
 // import DefaultLayout from "./containers/DefaultLayout";
 import { Redirect, Route, Switch } from "react-router";
 import 'antd/dist/antd.css';
+import Spinner from './components/Spinner';
 
 
 
@@ -44,7 +45,7 @@ class App extends Component {
 
       // (this.state.isLoading) ? ( <div>Загрузка...</div> ) : ( this.state.isError? <div>Error</div> :(
 
-      <Suspense fallback={ <div>Загрузка...</div> }>
+      <Suspense fallback={ <Spinner/> }>
         <Switch>
 
           <Route path="/student" name="Student" render={ props => <StudentLayout { ...props } /> } />

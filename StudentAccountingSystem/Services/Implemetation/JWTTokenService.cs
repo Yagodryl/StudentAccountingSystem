@@ -36,14 +36,19 @@ namespace StudentAccountingSystem.Services.Implemetation
             var roles = _userManager.GetRolesAsync(user).Result;
             roles = roles.OrderByDescending(r => r).ToList();
             var claims = new List<Claim>();
-
-            var result = _context.Users.Include(x=>x.StudentProfile).FirstOrDefault(u => u.Email == user.Email);
+            var result = _context.Users.Include(x => x.StudentProfile).FirstOrDefault(u => u.Email == user.Email);
             if (result != null)
             {
+                string image = result.StudentProfile.Image;
+                if (image == null)
+                    image = _configuration.GetValue<string>("DefaultImage");
+
                 claims = new List<Claim>()
                 {
                     new Claim("id", result.Id.ToString()),
-                    new Claim("name", result.StudentProfile.FullName)
+                    new Claim("name", result.StudentProfile.FullName),
+                    new Claim("image", image)
+
                 };
                 foreach (var role in roles)
                 {

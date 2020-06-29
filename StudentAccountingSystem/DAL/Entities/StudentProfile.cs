@@ -19,6 +19,7 @@ namespace StudentAccountingSystem.DAL.Entities
         [StringLength(150)]
         public string Image { get; set; }
 
+        public ICollection<CourseStudent> CourseStudents { get; set; }
 
     }
 }

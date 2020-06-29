@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Row } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { MailOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import * as registerActions from "./reducer";
-
+import Spinner from '../Spinner';
 
 class Register extends Component {
     state = {}
@@ -74,6 +74,8 @@ class Register extends Component {
                             </Button>
                     </Form.Item>
                 </Form>
+                {this.props.loading && <Spinner/>}
+
             </React.Fragment>
         );
     }

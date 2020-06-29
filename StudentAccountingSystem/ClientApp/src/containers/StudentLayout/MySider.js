@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 
 
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu} from 'antd';
 import {
-    DesktopOutlined,
-    PieChartOutlined,
-    FileOutlined,
-    TeamOutlined,
+
     UserOutlined,
+    BookOutlined,
+    AppstoreOutlined
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 const { Header, Content, Footer, Sider } = Layout;
@@ -37,15 +36,15 @@ class MySider extends Component {
       <Menu.Item key="1" icon={<UserOutlined />}>
           <Link to="/student/profile">Мій профіль</Link>
         </Menu.Item>
-        <Menu.Item key="2" icon={<TeamOutlined />}>
-          nav 2
+        <Menu.Item key="2" icon={<AppstoreOutlined />}>
+          <Link to="/student/list-courses">Список курсів</Link>
         </Menu.Item>
-        <Menu.Item key="3" icon={<TeamOutlined />}>
+        {/* <Menu.Item key="3" icon={<TeamOutlined />}>
           nav 3
         </Menu.Item>
         <Menu.Item key="4" icon={<UserOutlined />}>
           nav 4
-        </Menu.Item>
+        </Menu.Item> */}
         {/* <SubMenu key="sub1" icon={<UserOutlined />} title="User">
           <Menu.Item key="3">Tom</Menu.Item>
           <Menu.Item key="4">Bill</Menu.Item>

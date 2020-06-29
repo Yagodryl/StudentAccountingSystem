@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Row, Col, Tabs, Typography, Button } from 'antd';
+import { Row, Col, Typography, Button } from 'antd';
 import * as ProfileActions from "./reducer";
 import { connect } from 'react-redux';
+import Spinner from '../../Spinner';
 
 const { Title } = Typography;
 class ProfilePage extends Component {
@@ -15,10 +16,9 @@ class ProfilePage extends Component {
         const {id, name, email, image} = this.props.stydentProfile;
         return (
             <Row>
-              {this.props.isLoading && <div>SSSSS</div>}
-
+              {this.props.isLoading && <Spinner/>}
                 <Col xs={ 24 } md={ 12 } xl={ 8 } style={ { paddingLeft: 20, paddingRight: 20 } }>
-                    <img src={image} width="100%" />
+                    <img src={`${image}?t=${new Date().getTime()}`} width="100%" />
                     <Button size={ "large" } style={ { width: "100%", marginTop: 5 } }>Edit photo</Button>
                 </Col>
                 <Col xs={ 24 } md={ 12 } xl={ 16 } style={ { paddingLeft: 20, paddingRight: 20 } }>
