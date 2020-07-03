@@ -5,15 +5,6 @@ import { LogoutOutlined} from '@ant-design/icons';
 
 const { Header, Content, Footer, Sider } = Layout;
 
-// const menu = (
-//   <Menu size={ "large" }>
-//     {/* <Menu.Item  style={{fontSize: "16px"}}>
-//     <Link to="/student/profile"><UserOutlined style={{fontSize: "20px"}} />Profile</Link>
-//     </Menu.Item> */}
-//     {/* <Menu.Divider /> */ }
-//     <Menu.Item danger style={ { fontSize: "14px" } }> <LogoutOutlined style={ { fontSize: "18px" } } onClick=() />Вихід</Menu.Item>
-//   </Menu>
-// );
 const MyHeader = ({image, logout})=> {
     return (
     <Header id="myHeader"  >
@@ -35,4 +26,4 @@ const MyHeader = ({image, logout})=> {
       </Dropdown>
     </Header>);
 }
-export default MyHeader
+export default MyHeader;

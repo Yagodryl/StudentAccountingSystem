@@ -16,7 +16,7 @@ import Spinner from './components/Spinner';
 
 const DefaultLayout = React.lazy(()=> import("./containers/DefaultLayout"))
 const StudentLayout = React.lazy(() => import('./containers/StudentLayout'));
-
+const AdminLayout = React.lazy(() => import('./containers/AdminLayout'));
 
 class App extends Component {
 
@@ -49,6 +49,7 @@ class App extends Component {
         <Switch>
 
           <Route path="/student" name="Student" render={ props => <StudentLayout { ...props } /> } />
+          <Route path="/admin" name="Admin" render={ props => <AdminLayout { ...props } /> } />
           <Route path="/" name="Default"
             render={ props => <DefaultLayout { ...props } /> } />
 

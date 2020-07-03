@@ -37,7 +37,7 @@ namespace StudentAccountingSystem.Services.Implemetation
             roles = roles.OrderByDescending(r => r).ToList();
             var claims = new List<Claim>();
             var result = _context.Users.Include(x => x.StudentProfile).FirstOrDefault(u => u.Email == user.Email);
-            if (result != null)
+            if (result != null && roles[0] == "Student")
             {
                 string image = result.StudentProfile.Image;
                 if (image == null)
@@ -49,6 +49,17 @@ namespace StudentAccountingSystem.Services.Implemetation
                     new Claim("name", result.StudentProfile.FullName),
                     new Claim("image", image)
 
+                };
+                foreach (var role in roles)
+                {
+                    claims.Add(new Claim("roles", role));
+                }
+            }else if(result != null && roles[0] == "Admin")
+            {
+                claims = new List<Claim>()
+                {
+                    new Claim("id", result.Id.ToString()),
+                    new Claim("name", "Admin"),
                 };
                 foreach (var role in roles)
                 {

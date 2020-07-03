@@ -2,7 +2,7 @@ import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import MainLayout from "./MainLayout";
-import studentRoutes from '../../routes/studentRoutes';
+import adminRoutes from '../../routes/adminRoutes';
 import Spinner from '../../components/Spinner';
 
 
@@ -12,7 +12,7 @@ class StudentLayout extends Component {
             <MainLayout>
                 <Suspense fallback={ <Spinner /> }>
                     <Switch>
-                        { studentRoutes.map((route, idx) => {
+                        { adminRoutes.map((route, idx) => {
                             return route.component ? (
                                 <Route
                                     key={ idx }

@@ -123,9 +123,9 @@ export const login = model => {
 
 export function logout() {
     return dispatch => {
-      logoutByJWT(dispatch);
+        logoutByJWT(dispatch);
     };
-  }
+}
 
 export const register = model => {
     return dispatch => {
@@ -162,14 +162,14 @@ function getUrlToRedirect() {
             if (roles[i] === "Student") {
                 path = "/student/profile";
             } else if (roles[i] === "Admin") {
-                path = "/admin";
+                path = "/admin/list-students";
             }
         }
     } else {
         if (roles === "Student") {
             path = "/student/profile";
         } else if (roles === "Admin") {
-            path = "/admin";
+            path = "/admin/list-students";
         }
     }
     return path;

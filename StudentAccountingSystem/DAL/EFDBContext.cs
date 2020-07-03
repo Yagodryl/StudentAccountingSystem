@@ -50,6 +50,12 @@ namespace StudentAccountingSystem.DAL
                    .WithMany(s => s.CourseStudents)
                    .HasForeignKey(cs => cs.StudentProfileId);
             });
+
+            builder.Entity<Course>()
+                .HasOne(cd => cd.CourseDescription)
+                .WithOne(c => c.Course)
+                .HasForeignKey<CourseDescription>(cd => cd.CourseId);
+
         }
     }
 }

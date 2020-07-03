@@ -1,21 +1,16 @@
 import React, { Component } from 'react';
-
-
 import { Layout, Menu} from 'antd';
 import {
-
     UserOutlined,
     BookOutlined,
     AppstoreOutlined
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
+const { Sider } = Layout;
 
 class MySider extends Component {
   state = { collapsed: false, }
   onCollapse = collapsed => {
-    // console.log(collapsed);
     this.setState({ collapsed });
   };
   render() { 
@@ -30,8 +25,6 @@ class MySider extends Component {
     onCollapse={(collapsed, type) => {
       console.log(collapsed, type);
     }}>
-               
-
       <Menu theme="light" defaultSelectedKeys={['1']} mode="inline">
       <Menu.Item key="1" icon={<UserOutlined />}>
           <Link to="/student/profile">Мій профіль</Link>
