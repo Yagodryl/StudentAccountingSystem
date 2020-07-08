@@ -12,4 +12,12 @@ namespace StudentAccountingSystem.Areas.Student.ViewModels
         public string Image { get; set; }
         public string Email { get; set; }
     }
+
+    public class CourseModel
+    {
+        public long Id { get; set; }
+        public string Title { get; set; }
+        public string Image { get; set; }
+        public string Description { get; set; }
+    }
 }

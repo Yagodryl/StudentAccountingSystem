@@ -18,9 +18,11 @@ namespace StudentAccountingSystem.DAL.Entities
         public string Image { get; set; }
         [StringLength(500)]
         public string ShortDescription { get; set; }
-
+       
+        [ForeignKey("CourseDescription")]
+        public long CourseDescriptionId { get; set; }
         public CourseDescription CourseDescription { get; set; }
 
-        public ICollection<CourseStudent> CourseStudents { get; set; }
+        public ICollection<StudentCourse> StudentCourses { get; set; }
     }
 }

@@ -46,7 +46,7 @@ namespace StudentAccountingSystem.Services.Implemetation
                 claims = new List<Claim>()
                 {
                     new Claim("id", result.Id.ToString()),
-                    new Claim("name", result.StudentProfile.FullName),
+                    new Claim("name", result.StudentProfile.FirstName+' '+result.StudentProfile.LastName),
                     new Claim("image", image)
 
                 };

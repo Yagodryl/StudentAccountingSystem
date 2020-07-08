@@ -45,9 +45,6 @@ export const profileReducer = (state = initialState, action) => {
         }
         default: return state;
     }
-
-
-
 }
 export const getProfile = () => {
     return dispatch => {

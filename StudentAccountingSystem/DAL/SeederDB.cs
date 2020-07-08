@@ -54,7 +54,11 @@ namespace StudentAccountingSystem.DAL
                 var student = new StudentProfile
                 {
                     Id = user.Id,
-                    FullName = "Ivanov Ivan Ivanovich"
+                    FirstName = "Ivan",
+                    LastName = "Ivanov",
+                    Birthday = DateTime.Parse("5/1/2000"),
+                    RegisterDate = DateTime.Now
+                    
                 };
                 _context.StudentProfiles.Add(student);
                 _context.SaveChanges();

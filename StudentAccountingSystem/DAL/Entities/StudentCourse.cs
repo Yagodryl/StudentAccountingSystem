@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StudentAccountingSystem.DAL.Entities
 {
-    public class CourseStudent
+    public class StudentCourse
     {
         public long StudentProfileId { get; set; }
         public StudentProfile StudentProfile { get; set; }

@@ -60,47 +60,50 @@ namespace StudentAccountingSystem.Areas.Account
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRgisterViewModel model)
         {
-            //try
-            //{
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest("Не валідні данні!");
-            }
-            var userByEmail = _context.Users.SingleOrDefault(u => u.Email == model.Email);
-            if (userByEmail != null)
-            {
-                return BadRequest("Користувач з даним номером телефону уже зареєстрований");
-            }
-            var roleName = "Student";
-            var user = new DbUser
-            {
-                UserName = model.Email,
-                Email = model.Email,
-            };
-            var result = await _userManager
-               .CreateAsync(user, model.Password);
-            var student = new StudentProfile
-            {
-                Id = user.Id,
-                FullName = model.Name
-            };
-            _context.StudentProfiles.Add(student);
-            _context.SaveChanges();
-            result = _userManager.AddToRoleAsync(user, roleName).Result;
-            if (!result.Succeeded)
-            {
-                return BadRequest("Помилка при реєстрації");
-            }
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Не валідні данні!");
+                }
+                var userByEmail = _context.Users.SingleOrDefault(u => u.Email == model.Email);
+                if (userByEmail != null)
+                {
+                    return BadRequest("Користувач з даним номером телефону уже зареєстрований");
+                }
+                var roleName = "Student";
+                var user = new DbUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                };
+                var result = await _userManager
+                   .CreateAsync(user, model.Password);
+                var student = new StudentProfile
+                {
+                    Id = user.Id,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    RegisterDate = DateTime.Now,
+                    Birthday = DateTime.Parse(model.Birthday)
+                };
+                _context.StudentProfiles.Add(student);
+                _context.SaveChanges();
+                result = _userManager.AddToRoleAsync(user, roleName).Result;
+                if (!result.Succeeded)
+                {
+                    return BadRequest("Помилка при реєстрації");
+                }
 
-            await _signInManager.SignInAsync(user, isPersistent: false);
-            return Ok(_tokenService.CreateToken(user));
+                await _signInManager.SignInAsync(user, isPersistent: false);
+                return Ok(_tokenService.CreateToken(user));
 
-            //}
-            //catch
-            //{
-            //    return BadRequest("Помилка при реєстрації!");
+            }
+            catch
+            {
+                return BadRequest("Помилка при реєстрації!");
 
-            //}
+            }
         }
     }
 }

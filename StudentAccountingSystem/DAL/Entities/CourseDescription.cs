@@ -12,8 +12,7 @@ namespace StudentAccountingSystem.DAL.Entities
         [Key]
         public long Id { get; set; }
         public string Description { get; set; }
-        [ForeignKey("Course")]
-        public long CourseId { get; set; }
+
         public Course Course { get; set; }
     }
 }

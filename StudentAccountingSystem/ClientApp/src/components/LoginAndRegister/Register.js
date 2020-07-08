@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, DatePicker } from 'antd';
 import { MailOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import * as registerActions from "./reducer";
@@ -23,15 +23,28 @@ class Register extends Component {
                 >
                     <Form.Item
                         name="email"
-                        rules={ [{ required: true, message: 'Please input your Email!' }, { type: 'email', message: "Incorrect Email!" }] }
+                        rules={ [{ required: true, message: 'Введіть ваш Email!' }, { type: 'email', message: "Не вірний формат Email!" }] }
                     >
                         <Input prefix={ <MailOutlined className="site-form-item-icon" /> } placeholder="Email" />
                     </Form.Item>
                     <Form.Item
-                        name="name"
-                        rules={ [{ required: true, message: 'Please input your name!' }] }
+                        name="firstName"
+                        rules={ [{ required: true, message: "Введіть ім'я!" }] }
                     >
-                        <Input prefix={ <UserOutlined className="site-form-item-icon" /> } placeholder="Full name" />
+                        <Input prefix={ <UserOutlined className="site-form-item-icon" /> } placeholder="Ім'я" />
+                    </Form.Item>
+                    <Form.Item
+                        name="lastName"
+                        rules={ [{ required: true, message: "Введіть прізвише!" }] }
+                    >
+                        <Input prefix={ <UserOutlined className="site-form-item-icon" /> } placeholder="Прізвище" />
+                    </Form.Item>
+                    <Form.Item
+                        name="birthday"
+                        rules={ [{ required: true, message: "Виберіть дату народження!" }] }
+                    >
+                        <DatePicker placeholder="Дата народження" format={'DD/MM/YYYY'}/>
+                        {/* <Input prefix={ <UserOutlined className="site-form-item-icon" /> } placeholder="Прізвище" /> */}
                     </Form.Item>
                     <Form.Item
                         name="password"

@@ -31,42 +31,42 @@ namespace StudentAccountingSystem.Areas.Student.Controllers
         }
 
 
+        [Authorize]
         [HttpGet("get-profile")]
-        //[Authorize]
         public IActionResult GetProfile()
         {
-            //if (User.Identity.IsAuthenticated)
-            //{
+            if (User.Identity.IsAuthenticated)
+            {
                 var userId = User.Claims.ToList()[0].Value;
 
                 var user = _context.Users
-                .Include(s=>s.StudentProfile)
+                .Include(s => s.StudentProfile)
                 .Single(u => u.Id == long.Parse(userId));
 
                 var profile = new ProfileModel()
                 {
                     Id = user.Id,
-                    Name = user.StudentProfile.FullName,
+                    Name = user.StudentProfile.FirstName + ' ' + user.StudentProfile.LastName,
                     Email = user.Email,
                     Image = user.StudentProfile.Image
                 };
 
-            if (profile != null)
-            {
-                string path = $"{_configuration.GetValue<string>("StudentUrlImages")}/500_";
-                profile.Image = profile.Image != null ?
-                    path + profile.Image
-                    :
-                    _configuration.GetValue<string>("StudentUrlImages") +
-                    "/500_" + _configuration.GetValue<string>("DefaultImage");
-            }
+                if (profile != null)
+                {
+                    string path = $"{_configuration.GetValue<string>("StudentUrlImages")}/500_";
+                    profile.Image = profile.Image != null ?
+                        path + profile.Image
+                        :
+                        _configuration.GetValue<string>("StudentUrlImages") +
+                        "/500_" + _configuration.GetValue<string>("DefaultImage");
+                }
 
                 return Ok(profile);
-            //}
-            //else
-            //{
-            //    return BadRequest("Будь ласка авторизуйтесь");
-            //}
+            }
+            else
+            {
+                return BadRequest("Будь ласка авторизуйтесь");
+            }
 
         }
     }

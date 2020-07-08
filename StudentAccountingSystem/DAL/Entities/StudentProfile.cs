@@ -13,13 +13,18 @@ namespace StudentAccountingSystem.DAL.Entities
         public long Id { get; set; }
         public virtual DbUser User { get; set; }
 
-        [Required, StringLength(200)]
-        public string FullName { get; set; }
-
+        [Required, StringLength(50)]
+        public string FirstName { get; set; }
+        [Required, StringLength(50)]
+        public string LastName { get; set; }
+        [Required]
+        public DateTime Birthday { get; set; }
+        [Required]
+        public DateTime RegisterDate { get; set; }
         [StringLength(150)]
         public string Image { get; set; }
 
-        public ICollection<CourseStudent> CourseStudents { get; set; }
+        public ICollection<StudentCourse> StudentCourses { get; set; }
 
     }
 }

@@ -1,4 +1,5 @@
 import AddCourseServices from './AddCourseServices';
+import { push } from 'react-router-redux';
 
 export const ADD_COURSE_STARTED = "addCourse/ADD_COURSE_STARTED";
 export const ADD_COURSE_SUCCESS = "addCourse/ADD_COURSE_SUCCESS";
@@ -51,6 +52,7 @@ export const addCourse=(model)=>{
         AddCourseServices.addCourse(model)
         .then(()=>{
             dispatch({type: ADD_COURSE_SUCCESS});
+            dispatch(push("/admin/list-students"))
         })
         .catch((err)=>{
             dispatch({
