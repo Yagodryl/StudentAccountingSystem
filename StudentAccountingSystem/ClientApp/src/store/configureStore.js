@@ -6,8 +6,9 @@ import { routerReducer, routerMiddleware } from 'react-router-redux';
 import { loginAndRegisterReducer } from "../components/LoginAndRegister/reducer";
 import { profileReducer } from "../components/Student/Profile/reducer";
 import { addCourseReducer } from "../components/Admin/AddCourse/reducer";
-import { coursesReducer } from "../components/Student/Courses/reducer"
-import {listStudentsReducer} from "../components/Admin/ListStudents/reducer"
+import { coursesReducer } from "../components/Student/Courses/reducer";
+import {listStudentsReducer} from "../components/Admin/ListStudents/reducer";
+import {courseInfoReducer} from "../components/Student/CourseInfo/reducer";
 
 export default function configureStore(history, initialState) {
   const reducers = {
@@ -15,7 +16,8 @@ export default function configureStore(history, initialState) {
     profile: profileReducer,
     addCourse: addCourseReducer,
     courses: coursesReducer,
-    listStudents: listStudentsReducer
+    listStudents: listStudentsReducer,
+    courseInfo: courseInfoReducer,
   };
 
   const middleware = [

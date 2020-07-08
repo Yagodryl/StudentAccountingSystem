@@ -20,4 +20,8 @@ namespace StudentAccountingSystem.Areas.Student.ViewModels
         public string Image { get; set; }
         public string Description { get; set; }
     }
+    public class CourseInfoModel
+    {
+        public string Description { get; set; }
+    }
 }

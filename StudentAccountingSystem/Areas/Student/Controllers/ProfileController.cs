@@ -31,7 +31,7 @@ namespace StudentAccountingSystem.Areas.Student.Controllers
         }
 
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("get-profile")]
         public IActionResult GetProfile()
         {
