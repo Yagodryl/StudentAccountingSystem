@@ -23,5 +23,15 @@ namespace StudentAccountingSystem.Areas.Student.ViewModels
     public class CourseInfoModel
     {
         public string Description { get; set; }
+        public string ShortDescription { get; set; }
+        public string Title { get; set; }
+        public string Image { get; set; }
+        public bool IsSubscribed { get; set; } = false;
+        public string StartDate { get; set; }
+    }
+    public class SubscribeModel
+    {
+        public string StudyDate { get; set; }
+        public string CourseId { get; set; }
     }
 }

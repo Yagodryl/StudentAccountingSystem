@@ -1,8 +1,14 @@
 import CourseInfoServices from "./CourseInfoServices";
+import { push } from "react-router-redux";
 
 export const GET_COURSE_STARTED = "courseInfo/GET_COURSE_STARTED";
 export const GET_COURSE_SUCCESS = "courseInfo/GET_COURSE_SUCCESS";
 export const GET_COURSE_FAILED = "courseInfo/GET_COURSE_FAILED";
+
+export const SUBSCRIBE_STARTED = "courseInfo/SUBSCRIBE_STARTED";
+export const SUBSCRIBE_SUCCESS = "courseInfo/SUBSCRIBE_SUCCESS";
+export const SUBSCRIBE_FAILED = "courseInfo/SUBSCRIBE_FAILED";
+
 
 const initialState ={
     loading: false,
@@ -40,6 +46,32 @@ export const courseInfoReducer = (state = initialState, action) => {
                 errors: action.error
             }
         }
+        case SUBSCRIBE_STARTED:{
+            return {
+                ...state, 
+                loading: true,
+                success: false,
+                failed: false,
+                errors: {}
+            }
+        }
+        case SUBSCRIBE_SUCCESS:{
+            return {
+                ...state, 
+                loading: false,
+                success: true,
+                failed: false,
+            }
+        }
+        case SUBSCRIBE_FAILED:{
+            return {
+                ...state, 
+                loading: false,
+                success: false,
+                failed: true,
+                errors: action.error
+            }
+        }
         default: return state;
 
     }
@@ -58,6 +90,25 @@ export const getCourseInfo=(id)=>{
             .catch(error => {
                 dispatch({
                     type: GET_COURSE_FAILED,
+                    error: error.response.data
+                })
+            });
+    }
+}
+
+export const subscribe=(model)=>{
+    return dispatch =>{
+        dispatch({type: SUBSCRIBE_STARTED});
+        CourseInfoServices.subscribe(model)
+            .then(()=>{
+                dispatch({
+                    type: SUBSCRIBE_SUCCESS
+                })
+                dispatch(push('/student/profile'));
+            })
+            .catch(error => {
+                dispatch({
+                    type: SUBSCRIBE_FAILED,
                     error: error.response.data
                 })
             });
