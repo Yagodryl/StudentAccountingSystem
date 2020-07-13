@@ -69,7 +69,7 @@ namespace StudentAccountingSystem.Areas.Account
                 var userByEmail = _context.Users.SingleOrDefault(u => u.Email == model.Email);
                 if (userByEmail != null)
                 {
-                    return BadRequest("Користувач з даним номером телефону уже зареєстрований");
+                    return BadRequest("Користувач з даним Email уже зареєстрований");
                 }
                 var roleName = "Student";
                 var user = new DbUser

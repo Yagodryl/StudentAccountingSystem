@@ -10,7 +10,7 @@ namespace StudentAccountingSystem.DAL.Entities
     public class StudentProfile
     {
         [Key, ForeignKey("User")]
-        public long Id { get; set; }
+        public Guid Id { get; set; }
         public virtual DbUser User { get; set; }
 
         [Required, StringLength(50)]

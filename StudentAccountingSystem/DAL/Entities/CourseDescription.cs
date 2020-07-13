@@ -10,7 +10,7 @@ namespace StudentAccountingSystem.DAL.Entities
     public class CourseDescription
     {
         [Key]
-        public long Id { get; set; }
+        public Guid Id { get; set; }
         public string Description { get; set; }
 
         public Course Course { get; set; }

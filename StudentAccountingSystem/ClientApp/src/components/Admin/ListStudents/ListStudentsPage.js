@@ -38,7 +38,7 @@ class ListStudentsPage extends Component {
         const {pagination} = this.state;
         return (
             <React.Fragment>
-                <Table pagination={pagination} dataSource={ listStudents } onChange={this.handleTableChange}>
+                <Table style={{overflow: "auto"}} pagination={pagination} dataSource={ listStudents } onChange={this.handleTableChange}>
 
                     <Column sorter={true} title="First Name" dataIndex="firstName" key="firstName" />
                     <Column sorter={true} title="Last Name" dataIndex="lastName" key="lastName" />

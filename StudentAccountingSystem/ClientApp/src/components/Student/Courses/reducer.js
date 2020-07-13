@@ -51,12 +51,15 @@ export const getCourses=()=>{
         dispatch({type: GET_COURSES_STARTED});
         CoursesServices.getCourses()
             .then((response)=>{
+                console.log("ssss")
                 dispatch({
                     type: GET_COURSES_SUCCESS,
                     payload: response.data
                 })
             })
             .catch(error => {
+                console.log("ssss1: ", error.response.data)
+
                 dispatch({
                     type: GET_COURSES_FAILED,
                     error: error.response.data

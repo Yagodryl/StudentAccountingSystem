@@ -9,10 +9,10 @@ namespace StudentAccountingSystem.DAL.Entities
 {
     public class StudentCourse
     {
-        public long StudentProfileId { get; set; }
+        public Guid StudentProfileId { get; set; }
         public StudentProfile StudentProfile { get; set; }
  
-        public long CourseId { get; set; }
+        public Guid CourseId { get; set; }
         public Course Course { get; set; }
 
         public DateTime StartDate { get; set; }

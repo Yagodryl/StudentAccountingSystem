@@ -37,11 +37,11 @@ namespace StudentAccountingSystem.Areas.Student.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var userId = User.Claims.ToList()[0].Value;
+                var userId = Guid.Parse(User.Claims.ToList()[0].Value);
 
                 var user = _context.Users
                 .Include(s => s.StudentProfile)
-                .Single(u => u.Id == long.Parse(userId));
+                .Single(u => u.Id == userId);
 
                 var profile = new ProfileModel()
                 {

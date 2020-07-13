@@ -18,17 +18,16 @@ namespace StudentAccountingSystem.Areas.Admin.ViewModels
     {
         public int Current { get; set; }
         public int PageSize { get; set; }
-
         public string Field { get; set; }
         public string Order { get; set; }
-
-
+        public string SearchFirstName { get; set; }
+        public string SearchLastName { get; set; }
     }
 
     public class StudentViewModel
     {
-        public long Id { get; set; }
-        public long Key { get; set; }
+        public Guid Id { get; set; }
+        public Guid Key { get; set; }
         public string RegisterDate { get; set; }
         public string Birthday { get; set; }
         public string FirstName { get; set; }

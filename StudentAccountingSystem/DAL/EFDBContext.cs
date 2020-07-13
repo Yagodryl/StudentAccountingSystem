@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using StudentAccountingSystem.DAL.Entities;
+using System;
+
 namespace StudentAccountingSystem.DAL
 {
-    public class EFDBContext : IdentityDbContext<DbUser, DbRole, long, IdentityUserClaim<long>,
-    DbUserRole, IdentityUserLogin<long>,
-    IdentityRoleClaim<long>, IdentityUserToken<long>>
+    public class EFDBContext : IdentityDbContext<DbUser, DbRole, Guid, IdentityUserClaim<Guid>,
+    DbUserRole, IdentityUserLogin<Guid>,
+    IdentityRoleClaim<Guid>, IdentityUserToken<Guid>>
     {
         public EFDBContext(DbContextOptions<EFDBContext> options)
             : base(options)

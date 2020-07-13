@@ -15,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using StudentAccountingSystem.DAL;
 using StudentAccountingSystem.DAL.Entities;
 using StudentAccountingSystem.Helpers;
+using StudentAccountingSystem.Repositories;
 using StudentAccountingSystem.Services.Abstraction;
 using StudentAccountingSystem.Services.Implemetation;
 using System;
@@ -48,8 +49,19 @@ namespace StudentAccountingSystem
             services.AddSession();
 
 
-            services.AddScoped<IJWTTokenService, JWTTokenService>();
+            #region Repositories
+            services.AddScoped<ICourseRepository, CourseRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IStudentCourseRepository, StudentCourseRepository>();
+            services.AddScoped<IStudentProfileRepository, StudentProfileRepository>();
+            services.AddScoped<ICourseDescriptionRepository, CourseDescriptionRepository>();
+            #endregion
 
+            #region Services
+            services.AddScoped<IJWTTokenService, JWTTokenService>();
+            services.AddScoped<ICourseService, CourseService>();
+            services.AddScoped<IAccountService, AccountService>();
+            #endregion
 
             #region Authentication
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is Jon friend of Bob"));

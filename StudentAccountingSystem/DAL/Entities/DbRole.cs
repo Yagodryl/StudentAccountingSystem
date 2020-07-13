@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StudentAccountingSystem.DAL.Entities
 {
-    public class DbRole: IdentityRole<long>
+    public class DbRole: IdentityRole<Guid>
     {
         public ICollection<DbUserRole> UserRoles { get; set; }
     }
