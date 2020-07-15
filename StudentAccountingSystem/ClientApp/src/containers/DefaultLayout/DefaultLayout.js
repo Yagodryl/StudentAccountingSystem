@@ -22,7 +22,9 @@ class DefaultLayout extends Component {
                                     ) } />
                             ) : (null);
                         }) }
+                        <Redirect from="/hangfire" to="/hangfire" />
                         <Redirect from="/" to="/login" />
+
                     </Switch>
                 </Suspense>
 

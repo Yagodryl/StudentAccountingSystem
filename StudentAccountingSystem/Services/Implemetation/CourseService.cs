@@ -46,7 +46,10 @@ namespace StudentAccountingSystem.Services.Implemetation
                 ShortDescription = c.ShortDescription,
                 Title = c.Name
             }).SingleOrDefaultAsync(x => x.Id == (Guid)courseId);
-            var studentCourse = await _studentCourseRepository.GetAll().SingleOrDefaultAsync(sc => sc.CourseId == (Guid)courseId && sc.StudentProfileId == (Guid)userId);
+
+            var studentCourse = await _studentCourseRepository.GetAll()
+                                                              .SingleOrDefaultAsync(sc => sc.CourseId == (Guid)courseId &&
+                                                                                          sc.StudentProfileId == (Guid)userId);
             if (studentCourse != null)
             {
                 item.IsSubscribed = true;

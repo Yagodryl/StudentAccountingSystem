@@ -13,7 +13,7 @@ class ProfilePage extends Component {
   
 
     render() {
-        const {id, name, email, image} = this.props.stydentProfile;
+        const {id, name, email, image, birthday} = this.props.stydentProfile;
         return (
             <Row>
               {this.props.isLoading && <Spinner/>}
@@ -23,9 +23,9 @@ class ProfilePage extends Component {
                 </Col>
                 <Col xs={ 24 } md={ 12 } xl={ 16 } style={ { paddingLeft: 20, paddingRight: 20 } }>
                     <Title>{name}</Title>
-                    <Title level={ 2 }>Email: {email}</Title>
+                    <Title level={ 3 }>Email: {email}</Title>
+                    <Title level={ 3 }>Дата народження: {birthday}</Title>
                 </Col>
-
             </Row>
         );
     }

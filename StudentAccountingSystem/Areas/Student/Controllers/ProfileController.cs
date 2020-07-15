@@ -31,7 +31,6 @@ namespace StudentAccountingSystem.Areas.Student.Controllers
         }
 
 
-        //[Authorize]
         [HttpGet("get-profile")]
         public IActionResult GetProfile()
         {
@@ -48,7 +47,8 @@ namespace StudentAccountingSystem.Areas.Student.Controllers
                     Id = user.Id,
                     Name = user.StudentProfile.FirstName + ' ' + user.StudentProfile.LastName,
                     Email = user.Email,
-                    Image = user.StudentProfile.Image
+                    Image = user.StudentProfile.Image,
+                    Birthday = user.StudentProfile.Birthday.ToString("dd/MM/yyyy")
                 };
 
                 if (profile != null)

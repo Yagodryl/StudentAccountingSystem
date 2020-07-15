@@ -47,7 +47,6 @@ class App extends Component {
 
       <Suspense fallback={ <Spinner/> }>
         <Switch>
-
           <Route path="/student" name="Student" render={ props => <StudentLayout { ...props } /> } />
           <Route path="/admin" name="Admin" render={ props => <AdminLayout { ...props } /> } />
           <Route path="/" name="Default"

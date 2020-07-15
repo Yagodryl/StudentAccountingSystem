@@ -17,8 +17,10 @@ export const LOGIN_SET_CURRENT_USER = "login/SET_CURRENT_USER";
 const initialState = {
     loading: false,
     success: false,
-    failed: false,
-    errors: {},
+    registerFailed: false,
+    registerErrors: [],
+    loginFailed:false,
+    loginErrors: [],
     isAuthenticated: false,
     user: {
         id: "",
@@ -35,8 +37,8 @@ export const loginAndRegisterReducer = (state = initialState, action) => {
                 ...state,
                 loading: true,
                 success: false,
-                failed: false,
-                errors: {}
+                loginFailed : false,
+                loginErrors: []
             }
         }
         case LOGIN_POST_SUCCESS: {
@@ -44,8 +46,8 @@ export const loginAndRegisterReducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 success: true,
-                failed: false,
-                errors: {}
+                loginFailed: false,
+                loginErrors: []
             }
         }
         case LOGIN_POST_FAILED: {
@@ -53,8 +55,8 @@ export const loginAndRegisterReducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 success: false,
-                failed: true,
-                errors: action.errors
+                loginFailed: true,
+                loginErrors: action.errors
             }
         }
 
@@ -71,8 +73,8 @@ export const loginAndRegisterReducer = (state = initialState, action) => {
                 ...state,
                 loading: true,
                 success: false,
-                failed: false,
-                errors: {}
+                registerFailed: false,
+                registerErrors: []
             }
         }
         case REGISTER_POST_SUCCESS: {
@@ -80,8 +82,8 @@ export const loginAndRegisterReducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 success: true,
-                failed: false,
-                errors: {}
+                registerFailed: false,
+                registerErrors: []
             }
         }
         case REGISTER_POST_FAILED: {
@@ -89,8 +91,8 @@ export const loginAndRegisterReducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 success: false,
-                failed: true,
-                errors: action.errors
+                registerFailed: true,
+                registerErrors: action.errors
             }
         }
         default: return state;
@@ -115,7 +117,7 @@ export const login = model => {
             .catch(err => {
                 dispatch({
                     type: LOGIN_POST_FAILED,
-                    errors: err.response.data
+                    errors: err.response.data.errors
                 });
             });
     }
@@ -145,7 +147,7 @@ export const register = model => {
             .catch(err => {
                 dispatch({
                     type: REGISTER_POST_FAILED,
-                    errors: err.response.data
+                    errors: err.response.data.errors
                 });
             });
     }

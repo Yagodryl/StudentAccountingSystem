@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Row } from 'antd';
+import { Form, Input, Button, Row, Alert } from 'antd';
 
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { connect } from "react-redux";
@@ -14,8 +14,14 @@ class Login extends Component {
             this.props.login(values);
 
         };
+        const {errors = []} = this.props;
+        const errorsMess = errors.map((item, index)=>{
+            return <p key={index}>{item.message}</p>;
+        })
         return (
             <React.Fragment>
+                {this.props.failed && <Alert style={{marginBottom: '15px'}} type='error' message={errorsMess}></Alert>}
+
                 <Form
                     name="normal_login"
                     className="login-form"
@@ -57,9 +63,9 @@ class Login extends Component {
 function mapStateToProps({loginAndRegister}) {
     return {
         loading: loginAndRegister.loading,
-        failed: loginAndRegister.failed,
+        failed: loginAndRegister.loginFailed,
         success: loginAndRegister.success,
-        errors: loginAndRegister.errors,
+        errors: loginAndRegister.loginErrors,
     }
 }
 

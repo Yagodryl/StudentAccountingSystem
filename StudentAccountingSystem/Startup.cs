@@ -1,3 +1,6 @@
+using FluentValidation.AspNetCore;
+using Hangfire;
+using Hangfire.SQLite;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,8 +40,15 @@ namespace StudentAccountingSystem
         {
             services.AddCors();
 
+            services.AddMvc(options => 
+            {
+                options.EnableEndpointRouting = false;
+                options.Filters.Add<ValidationFilter>();
+            })
+                .AddFluentValidation(mvcConfiguration=> mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>());
+            var options = new DbContextOptionsBuilder();
             services.AddDbContext<EFDBContext>
-                (options => options.UseSqlite("Data Source=StudentAccountingDB.sqlite"));
+                (options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllersWithViews();
 
@@ -48,6 +58,17 @@ namespace StudentAccountingSystem
 
             services.AddSession();
 
+            #region HangFire
+            var sqliteOptions = new SQLiteStorageOptions();
+
+            services.AddHangfire(config =>
+                config.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseDefaultTypeSerializer()
+                .UseSQLiteStorage(Configuration.GetConnectionString("HangFireStorage"), sqliteOptions));
+
+            services.AddHangfireServer();
+            #endregion
 
             #region Repositories
             services.AddScoped<ICourseRepository, CourseRepository>();
@@ -95,9 +116,13 @@ namespace StudentAccountingSystem
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, EFDBContext eFDBContext)
+        public void Configure(IApplicationBuilder app,
+            IWebHostEnvironment env,
+            EFDBContext eFDBContext,
+            IBackgroundJobClient backgroundJobClient,
+            IRecurringJobManager recurringJobManager
+            )
         {
-
             app.UseCors(
                builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
             app.UseForwardedHeaders(new ForwardedHeadersOptions
@@ -115,11 +140,27 @@ namespace StudentAccountingSystem
             {
                 app.UseExceptionHandler("/Error");
             }
+
             app.UseAuthentication();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseRouting();
             app.UseSession();
+
+            #region HangFire
+            app.UseHangfireDashboard();
+
+            backgroundJobClient.Enqueue(() => Console.WriteLine("SSSS"));
+            recurringJobManager.AddOrUpdate("Message daily",
+                () => Console.WriteLine("Test minte"),
+                Cron.Daily(8), TimeZoneInfo.Local);
+            recurringJobManager.AddOrUpdate("Message monthly",
+                () => Console.WriteLine("Test minte"),
+                 Cron.Daily(12), TimeZoneInfo.Local);
+            recurringJobManager.AddOrUpdate("Message weekly",
+                () => Console.WriteLine("Test minte"),
+                Cron.Daily(12), TimeZoneInfo.Local);
+            #endregion
 
             #region InitStaticFiles SudentImages
             string pathStudent = InitStaticFiles
@@ -133,6 +174,7 @@ namespace StudentAccountingSystem
             });
 
             #endregion
+
             #region InitStaticFiles Images
             string pathRoot = InitStaticFiles
                 .CreateFolderServer(env, this.Configuration,
@@ -144,8 +186,6 @@ namespace StudentAccountingSystem
                 RequestPath = new PathString("/" + Configuration.GetValue<string>("UrlImages"))
             });
             #endregion;
-
-
 
             app.UseEndpoints(endpoints =>
             {
@@ -163,8 +203,10 @@ namespace StudentAccountingSystem
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+            
+            
 
-            SeederDB.SeedData(app.ApplicationServices, env, this.Configuration);
+            //SeederDB.SeedData(app.ApplicationServices, env, this.Configuration);
         }
     }
 }

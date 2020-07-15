@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, DatePicker } from 'antd';
+import { Form, Input, Button, DatePicker, Alert } from 'antd';
 import { MailOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import * as registerActions from "./reducer";
@@ -13,8 +13,14 @@ class Register extends Component {
             console.log('Success:', values);
             this.props.register(values);
         };
+        const {errors = []} = this.props;
+        const errorsMess = errors.map((item, index)=>{
+            return <p key={index}>{item.message}</p>;
+        })
         return (
             <React.Fragment>
+                {this.props.failed && <Alert style={{marginBottom: '15px'}} type='error' message={errorsMess}></Alert>}
+
                 <Form
                     name="register"
                     className="login-form"
@@ -23,13 +29,13 @@ class Register extends Component {
                 >
                     <Form.Item
                         name="email"
-                        rules={ [{ required: true, message: 'Введіть ваш Email!' }, { type: 'email', message: "Не вірний формат Email!" }] }
+                        // rules={ [{ required: true, message: 'Введіть ваш Email!' }, { type: 'email', message: "Не вірний формат Email!" }] }
                     >
                         <Input prefix={ <MailOutlined className="site-form-item-icon" /> } placeholder="Email" />
                     </Form.Item>
                     <Form.Item
                         name="firstName"
-                        rules={ [{ required: true, message: "Введіть ім'я!" }] }
+                        // rules={ [{ required: true, message: "Введіть ім'я!" }] }
                     >
                         <Input prefix={ <UserOutlined className="site-form-item-icon" /> } placeholder="Ім'я" />
                     </Form.Item>
@@ -88,18 +94,18 @@ class Register extends Component {
                     </Form.Item>
                 </Form>
                 {this.props.loading && <Spinner/>}
-
             </React.Fragment>
         );
     }
 }
 
 function mapStateToProps({loginAndRegister}) {
+    console.log("Errors: ", loginAndRegister.errors)
     return {
         loading: loginAndRegister.loading,
-        failed: loginAndRegister.failed,
+        failed: loginAndRegister.registerFailed,
         success: loginAndRegister.success,
-        errors: loginAndRegister.errors,
+        errors: loginAndRegister.registerErrors,
     }
 }
 
