@@ -98,11 +98,26 @@ namespace StudentAccountingSystem.Services.Implemetation
         {
             throw new NotImplementedException();
         }
+
+        public async Task<List<CourseModel>> GetCoursesByUserId(object userId)
+        {
+            var items = await _studentCourseRepository.GetAll()
+                                                      .Where(x => x.StudentProfileId == (Guid)userId)
+                                                      .Select(c => new CourseModel
+                                                        {
+                                                            Id = c.Course.Id,
+                                                            Image = c.Course.Image,
+                                                            Name = c.Course.Name,
+                                                            ShortDescription = c.Course.ShortDescription
+                                                        }).ToListAsync();
+            return items;
+        }
     }
     public interface ICourseService:IDataService<Course>
     {
         public Task<CourseInfoModel> GetById(object courseId, object userId);
         public Task Subscribe(StudentCourse model);
         public Task AddCourse(CourseViewModel model);
+        public Task<List<CourseModel>> GetCoursesByUserId(object userId);
     }
 }

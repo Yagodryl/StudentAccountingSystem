@@ -46,6 +46,8 @@ namespace StudentAccountingSystem.Areas.Student.Controllers
             return Ok(_courseService.GetById(id, userId).Result);
         }
 
+        
+
         [HttpPost("subscribe")]
         public async Task<IActionResult> Subscribe([FromBody] SubscribeModel model)
         {

@@ -9,7 +9,11 @@ const initialState = {
     success: false,
     failed: false,
     errors: {},
-    data: []
+    data: {
+        totalCount: 0,
+        students: [],
+        currentPage: 1
+    }
 }
 
 export const listStudentsReducer = (state = initialState, action) => {
@@ -29,7 +33,8 @@ export const listStudentsReducer = (state = initialState, action) => {
                 loading: false,
                 success: true,
                 failed: false,
-                data: action.payload
+                data: action.payload,
+                
             }
         }
         case GET_STUDENTS_FAILED: {
@@ -38,7 +43,7 @@ export const listStudentsReducer = (state = initialState, action) => {
                 loading: false,
                 success: false,
                 failed: true,
-                errors: action.errors
+                // errors: action.errors
             }
         }
         default: return state;
@@ -58,7 +63,7 @@ export const getListStudents = (filter) => {
             .catch(error => {
                 dispatch({
                     type: GET_STUDENTS_FAILED,
-                    error: error.response.data
+                    // error: error.response.data
                 })
             });
     }

@@ -30,11 +30,18 @@ namespace StudentAccountingSystem.Areas.Admin.ViewModels
         public Guid Id { get; set; }
         public Guid Key { get; set; }
         public string RegisterDate { get; set; }
-        public string Birthday { get; set; }
+        public string Age { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
         public ICollection<string> StudyDates { get; set; }
-
     }
+
+    public class PageStudentItemModel
+    {
+        public int TotalCount { get; set; }
+        public int CurrentPage { get; set; }
+        public List<StudentViewModel> Students { get; set; }
+    }
+
 }

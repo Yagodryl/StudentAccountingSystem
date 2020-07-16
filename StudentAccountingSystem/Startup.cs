@@ -148,18 +148,21 @@ namespace StudentAccountingSystem
             app.UseSession();
 
             #region HangFire
-            app.UseHangfireDashboard();
+            //app.UseHangfireDashboard();
 
-            backgroundJobClient.Enqueue(() => Console.WriteLine("SSSS"));
-            recurringJobManager.AddOrUpdate("Message daily",
-                () => Console.WriteLine("Test minte"),
-                Cron.Daily(8), TimeZoneInfo.Local);
-            recurringJobManager.AddOrUpdate("Message monthly",
-                () => Console.WriteLine("Test minte"),
-                 Cron.Daily(12), TimeZoneInfo.Local);
-            recurringJobManager.AddOrUpdate("Message weekly",
-                () => Console.WriteLine("Test minte"),
-                Cron.Daily(12), TimeZoneInfo.Local);
+            //backgroundJobClient.Enqueue(() => Console.WriteLine("SSSS"));
+           
+            //recurringJobManager.AddOrUpdate("Message daily",
+            //    () => Console.WriteLine("Test minte"),
+            //    Cron.Daily(8), TimeZoneInfo.Local);
+           
+            //recurringJobManager.AddOrUpdate("Message monthly",
+            //    () => Console.WriteLine("Test minte"),
+            //     Cron.Daily(12), TimeZoneInfo.Local);
+           
+            //recurringJobManager.AddOrUpdate("Message weekly",
+            //    () => Console.WriteLine("Test minte"),
+            //    Cron.Daily(12), TimeZoneInfo.Local);
             #endregion
 
             #region InitStaticFiles SudentImages

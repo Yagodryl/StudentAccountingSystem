@@ -51,9 +51,9 @@ namespace StudentAccountingSystem.Areas.Admin.Controllers
         [HttpPost("get-list-students")]
         public async Task<IActionResult> GetStudents([FromBody] FilterViewModel filter)
         {
-            var items = await _accountService.GetByFilter(filter);
+            var pageStudent = await _accountService.GetByFilter(filter);
 
-            return Ok(items);
+            return Ok(pageStudent);
         }
 
 

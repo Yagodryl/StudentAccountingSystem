@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -10,22 +11,17 @@ namespace StudentAccountingSystem.Helpers
 {
     public static class ImageHelper
     {
-        public static Bitmap FromBase64StringToImage(this string base64String)
+        public static Bitmap fileToImage(this IFormFile file)
         {
-            byte[] byteBuffer = Convert.FromBase64String(base64String);
-            try
-            {
-                using (MemoryStream memoryStream = new MemoryStream(byteBuffer))
-                {
-                    memoryStream.Position = 0;
-                    Image imgReturn;
-                    imgReturn = Image.FromStream(memoryStream);
-                    memoryStream.Close();
-                    byteBuffer = null;
-                    return new Bitmap(imgReturn);
-                }
-            }
-            catch { return null; }
+            //try
+            //{
+
+            using var img = Image.FromStream(file.OpenReadStream());
+
+            return new Bitmap(img);
+
+            //}
+            //catch { return null; }
 
         }
         public static Bitmap CompressImage(Bitmap originalPic, int maxWidth, int maxHeight)
@@ -62,13 +58,9 @@ namespace StudentAccountingSystem.Helpers
                 {
                     using (Graphics oGraphics = Graphics.FromImage(outBmp))
                     {
-                        //oGraphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                        //oGraphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+
                         oGraphics.DrawImage(originalPic, 0, 0, width, height);
-                        //Водяний знак
-                        //Font font = new Font("Arial", 20);
-                        //Brush brash = new SolidBrush(Color.Blue);
-                        //oGraphics.DrawString("Hello Vova", font, brash, new Point(25, 25));
+
                         return new Bitmap(outBmp);
                     }
                 }

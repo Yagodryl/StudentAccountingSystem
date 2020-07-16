@@ -10,6 +10,7 @@ using StudentAccountingSystem.DAL;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using StudentAccountingSystem.Services.Implemetation;
 
 namespace StudentAccountingSystem.Areas.Student.Controllers
 {
@@ -17,51 +18,31 @@ namespace StudentAccountingSystem.Areas.Student.Controllers
     [Route("api/profile")]
     public class ProfileController : ControllerBase
     {
-        private readonly EFDBContext _context;
-        private readonly IConfiguration _configuration;
+        private readonly IAccountService _accountService;
 
-        public ProfileController(
-            IConfiguration configuration,
+        public ProfileController(IAccountService accountService) =>
+            _accountService = accountService;
 
-            EFDBContext context)
+        [HttpPost("change-image/{id}")]
+        public async Task<IActionResult> UploadImage(IFormFile file, Guid id)
         {
-            _context = context;
-            _configuration = configuration;
+          ///  if (User.Identity.IsAuthenticated)
+            //{
+           //     var userId = Guid.Parse(User.Claims.ToList()[0].Value);
 
+                string ddd = await _accountService.ChangeImage(id, file);
+           // }
+                return Ok();
         }
 
-
         [HttpGet("get-profile")]
-        public IActionResult GetProfile()
+        public async Task<IActionResult> GetProfile()
         {
             if (User.Identity.IsAuthenticated)
             {
                 var userId = Guid.Parse(User.Claims.ToList()[0].Value);
 
-                var user = _context.Users
-                .Include(s => s.StudentProfile)
-                .Single(u => u.Id == userId);
-
-                var profile = new ProfileModel()
-                {
-                    Id = user.Id,
-                    Name = user.StudentProfile.FirstName + ' ' + user.StudentProfile.LastName,
-                    Email = user.Email,
-                    Image = user.StudentProfile.Image,
-                    Birthday = user.StudentProfile.Birthday.ToString("dd/MM/yyyy")
-                };
-
-                if (profile != null)
-                {
-                    string path = $"{_configuration.GetValue<string>("StudentUrlImages")}/500_";
-                    profile.Image = profile.Image != null ?
-                        path + profile.Image
-                        :
-                        _configuration.GetValue<string>("StudentUrlImages") +
-                        "/500_" + _configuration.GetValue<string>("DefaultImage");
-                }
-
-                return Ok(profile);
+                return Ok(await _accountService.GetStudentProfile(userId));
             }
             else
             {
