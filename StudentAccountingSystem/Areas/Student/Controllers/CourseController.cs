@@ -10,7 +10,6 @@ using StudentAccountingSystem.Areas.Student.ViewModels;
 using StudentAccountingSystem.DAL;
 using StudentAccountingSystem.DAL.Entities;
 using StudentAccountingSystem.Services.Implemetation;
-using AutoMapper;
 
 
 namespace StudentAccountingSystem.Areas.Student.Controllers
@@ -20,23 +19,18 @@ namespace StudentAccountingSystem.Areas.Student.Controllers
     public class CourseController : ControllerBase
     {
         private readonly ICourseService _courseService;
-        private readonly IMapper _modelMapper;
 
         public CourseController(EFDBContext context, ICourseService courseService)
         {
             _courseService = courseService;
-            _modelMapper = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<Course, CourseModel>();
-            }).CreateMapper();
-
+           
         }
 
         [HttpGet("list-courses")]
         public async Task<IActionResult> ListCourses()
         {
-            var items = await _courseService.GetAll();
-            return Ok(_modelMapper.Map<IEnumerable<Course>, IEnumerable<CourseModel>>(items));
+            var items = await _courseService.GetCourses();
+            return Ok(items);
         }
 
         [HttpGet("get-course-info/{id}")]

@@ -1,9 +1,8 @@
-import ProfileServices from "./ProfileServices";
+import StudentServices from "./StudentServices";
 
-export const GET_PROFILE_STARTED = "profile/GET_PROFILE_STARTED";
-export const GET_PROFILE_SUCCESS = "profile/GET_PROFILE_SUCCESS";
-export const GET_PROFILE_FAILED = "profile/GET_PROFILE_FAILED";
-
+export const GET_PROFILE_STARTED = "studentProfile/GET_PROFILE_STARTED";
+export const GET_PROFILE_SUCCESS = "studentProfile/GET_PROFILE_SUCCESS";
+export const GET_PROFILE_FAILED = "studentProfile/GET_PROFILE_FAILED";
 
 const initialState = {
     loading: false,
@@ -13,7 +12,8 @@ const initialState = {
     data: {}
 }
 
-export const profileReducer = (state = initialState, action) => {
+
+export const studentProfileReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_PROFILE_STARTED: {
             return {
@@ -46,10 +46,11 @@ export const profileReducer = (state = initialState, action) => {
         default: return state;
     }
 }
-export const getProfile = () => {
+
+export const getStudentProfile = (id) => {
     return dispatch => {
         dispatch({ type: GET_PROFILE_STARTED });
-        ProfileServices.getProfile()
+        StudentServices.getStudentProfile(id)
             .then(response => {
                 dispatch({
                     type: GET_PROFILE_SUCCESS,

@@ -7,8 +7,9 @@ import { loginAndRegisterReducer } from "../components/LoginAndRegister/reducer"
 import { profileReducer } from "../components/Student/Profile/reducer";
 import { addCourseReducer } from "../components/Admin/AddCourse/reducer";
 import { coursesReducer } from "../components/Student/Courses/reducer";
-import {listStudentsReducer} from "../components/Admin/ListStudents/reducer";
-import {courseInfoReducer} from "../components/Student/CourseInfo/reducer";
+import { listStudentsReducer } from "../components/Admin/ListStudents/reducer";
+import { courseInfoReducer } from "../components/Student/CourseInfo/reducer";
+import { studentProfileReducer } from "../components/Admin/Student/reducer";
 
 export default function configureStore(history, initialState) {
   const reducers = {
@@ -18,6 +19,7 @@ export default function configureStore(history, initialState) {
     courses: coursesReducer,
     listStudents: listStudentsReducer,
     courseInfo: courseInfoReducer,
+    studentProfile: studentProfileReducer,
   };
 
   const middleware = [

@@ -26,13 +26,8 @@ namespace StudentAccountingSystem.Areas.Student.Controllers
         [HttpPost("change-image/{id}")]
         public async Task<IActionResult> UploadImage(IFormFile file, Guid id)
         {
-          ///  if (User.Identity.IsAuthenticated)
-            //{
-           //     var userId = Guid.Parse(User.Claims.ToList()[0].Value);
-
-                string ddd = await _accountService.ChangeImage(id, file);
-           // }
-                return Ok();
+            await _accountService.ChangeImage(id, file);
+            return Ok();
         }
 
         [HttpGet("get-profile")]

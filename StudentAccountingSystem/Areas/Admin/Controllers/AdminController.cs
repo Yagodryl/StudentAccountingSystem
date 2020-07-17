@@ -56,6 +56,11 @@ namespace StudentAccountingSystem.Areas.Admin.Controllers
             return Ok(pageStudent);
         }
 
+        [HttpGet("get-student-profile/{id}")]
+        public async Task<IActionResult> GetStudentProfile (Guid id)
+        {
+            return Ok(await _accountService.GetStudentProfile(id));
+        }
 
     }
 }

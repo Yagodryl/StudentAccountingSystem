@@ -151,18 +151,31 @@ namespace StudentAccountingSystem
             //app.UseHangfireDashboard();
 
             //backgroundJobClient.Enqueue(() => Console.WriteLine("SSSS"));
-           
+
             //recurringJobManager.AddOrUpdate("Message daily",
             //    () => Console.WriteLine("Test minte"),
             //    Cron.Daily(8), TimeZoneInfo.Local);
-           
+
             //recurringJobManager.AddOrUpdate("Message monthly",
             //    () => Console.WriteLine("Test minte"),
             //     Cron.Daily(12), TimeZoneInfo.Local);
-           
+
             //recurringJobManager.AddOrUpdate("Message weekly",
             //    () => Console.WriteLine("Test minte"),
             //    Cron.Daily(12), TimeZoneInfo.Local);
+            #endregion
+
+            #region InitStaticFiles CourseImages
+            string pathCourse = InitStaticFiles
+                .CreateFolderServer(env, this.Configuration,
+                    new string[] { "ImagesPath", "ImagesPathCourse" });
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(pathCourse),
+                RequestPath = new PathString("/" + Configuration.GetValue<string>("CourseUrlImages"))
+            });
+
             #endregion
 
             #region InitStaticFiles SudentImages

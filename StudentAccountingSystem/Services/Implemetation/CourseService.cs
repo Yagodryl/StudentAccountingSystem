@@ -9,21 +9,26 @@ using StudentAccountingSystem.Repositories;
 using StudentAccountingSystem.Services.Abstraction;
 using StudentAccountingSystem.Areas.Student.ViewModels;
 using StudentAccountingSystem.Areas.Admin.ViewModels;
+using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace StudentAccountingSystem.Services.Implemetation
 {
     public class CourseService: ICourseService
     {
+        private readonly IConfiguration _configuration;
         private readonly ICourseRepository _courseRepository;
         private readonly IStudentCourseRepository _studentCourseRepository;
         private readonly ICourseDescriptionRepository _courseDescriptionRepository;
         public CourseService(ICourseRepository courseRepository,
             IStudentCourseRepository studentCourseRepository,
-            ICourseDescriptionRepository courseDescriptionRepository)
+            ICourseDescriptionRepository courseDescriptionRepository,
+            IConfiguration configuration)
         {
             _courseRepository = courseRepository;
             _studentCourseRepository = studentCourseRepository;
             _courseDescriptionRepository = courseDescriptionRepository;
+            _configuration = configuration;
         }
 
         public Task Delete(params object[] keys)
@@ -98,6 +103,17 @@ namespace StudentAccountingSystem.Services.Implemetation
         {
             throw new NotImplementedException();
         }
+        public async Task<IEnumerable<CourseModel>> GetCourses()
+        {
+            return (await _courseRepository.GetAll().Select(c => new CourseModel
+            {
+                Id = c.Id,
+                Image = Path.Combine(_configuration.GetValue<string>("CourseUrlImages"), $"500_{c.Image}"),
+                Name = c.Name,
+                ShortDescription = c.ShortDescription
+            }).ToListAsync());
+        }
+
 
         public async Task<List<CourseModel>> GetCoursesByUserId(object userId)
         {
@@ -119,5 +135,7 @@ namespace StudentAccountingSystem.Services.Implemetation
         public Task Subscribe(StudentCourse model);
         public Task AddCourse(CourseViewModel model);
         public Task<List<CourseModel>> GetCoursesByUserId(object userId);
+        public Task<IEnumerable<CourseModel>> GetCourses();
+
     }
 }
