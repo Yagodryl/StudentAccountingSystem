@@ -136,7 +136,11 @@ namespace StudentAccountingSystem.Services.Implemetation
                 LastName = s.LastName,
                 Age = GetAge(s.Birthday),
                 RegisterDate = s.RegisterDate.ToShortDateString(),
-                StudyDates = s.StudentCourses.Select(sc => sc.StartDate.ToShortDateString()).ToList()
+                StudentCourses = s.StudentCourses.Select(sc => new StudentCoursesModel 
+                    {
+                        Name = sc.Course.Name,
+                        StartDate = sc.StartDate.ToShortDateString()
+                    }).ToList()
             })
                 .Skip((filter.Current - 1) * filter.PageSize)
                 .Take(filter.PageSize)

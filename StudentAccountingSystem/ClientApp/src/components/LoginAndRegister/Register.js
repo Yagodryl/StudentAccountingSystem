@@ -20,7 +20,7 @@ class Register extends Component {
         return (
             <React.Fragment>
                 {this.props.failed && <Alert style={{marginBottom: '15px'}} type='error' message={errorsMess}></Alert>}
-
+                {this.props.success && <Alert style={{marginBottom: '15px'}} type='info' message="Реєстрація успішна! Підтвердіть ваш Email!"></Alert> }
                 <Form
                     name="register"
                     className="login-form"
@@ -29,13 +29,13 @@ class Register extends Component {
                 >
                     <Form.Item
                         name="email"
-                        // rules={ [{ required: true, message: 'Введіть ваш Email!' }, { type: 'email', message: "Не вірний формат Email!" }] }
+                        rules={ [{ required: true, message: 'Введіть ваш Email!' }, { type: 'email', message: "Не вірний формат Email!" }] }
                     >
                         <Input prefix={ <MailOutlined className="site-form-item-icon" /> } placeholder="Email" />
                     </Form.Item>
                     <Form.Item
                         name="firstName"
-                        // rules={ [{ required: true, message: "Введіть ім'я!" }] }
+                        rules={ [{ required: true, message: "Введіть ім'я!" }] }
                     >
                         <Input prefix={ <UserOutlined className="site-form-item-icon" /> } placeholder="Ім'я" />
                     </Form.Item>
@@ -104,7 +104,7 @@ function mapStateToProps({loginAndRegister}) {
     return {
         loading: loginAndRegister.loading,
         failed: loginAndRegister.registerFailed,
-        success: loginAndRegister.success,
+        success: loginAndRegister.registerSuccess,
         errors: loginAndRegister.registerErrors,
     }
 }

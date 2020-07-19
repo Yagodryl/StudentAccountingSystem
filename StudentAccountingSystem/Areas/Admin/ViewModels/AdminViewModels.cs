@@ -26,6 +26,12 @@ namespace StudentAccountingSystem.Areas.Admin.ViewModels
         public string SearchLastName { get; set; }
     }
 
+    public class StudentCoursesModel
+    {
+        public string Name { get; set; }
+        public string StartDate { get; set; }
+    }
+
     public class StudentViewModel
     {
         public Guid Id { get; set; }
@@ -35,7 +41,7 @@ namespace StudentAccountingSystem.Areas.Admin.ViewModels
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public ICollection<string> StudyDates { get; set; }
+        public ICollection<StudentCoursesModel> StudentCourses { get; set; }
     }
 
     public class PageStudentItemModel

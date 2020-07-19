@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,8 @@ using StudentAccountingSystem.Areas.Account.ViewModels;
 using StudentAccountingSystem.DAL;
 using StudentAccountingSystem.DAL.Entities;
 using StudentAccountingSystem.Services.Abstraction;
+using StudentAccountingSystem.Services.Implemetation;
+using StudentAccountingSystem.Validators.Responces;
 
 namespace StudentAccountingSystem.Areas.Account
 {
@@ -20,41 +23,65 @@ namespace StudentAccountingSystem.Areas.Account
         private readonly UserManager<DbUser> _userManager;
         private readonly SignInManager<DbUser> _signInManager;
         private readonly IJWTTokenService _tokenService;
+        private readonly IEmailService _emailService;
 
         public AccountController(EFDBContext context,
            UserManager<DbUser> userManager,
            SignInManager<DbUser> signInManager,
-           IJWTTokenService tokenService)
+           IJWTTokenService tokenService,
+           IEmailService emailService)
         {
             _userManager = userManager;
             _context = context;
             _signInManager = signInManager;
             _tokenService = tokenService;
-
+            _emailService = emailService;
         }
 
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginViewModel model)
         {
-            if (!ModelState.IsValid)
+            var user = await _userManager.FindByNameAsync(model.Email);
+            if (user != null)
             {
-                return BadRequest("Не валідні данні!");
+                if (!await _userManager.IsEmailConfirmedAsync(user))
+                {
+                    return BadRequest(new ErrorResponce { Errors = new List<ErrorModel> { new ErrorModel { Message = "Email не підтверджено!"} } });
+                }
             }
-            var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
-            if (user == null)
+            else
             {
-                return BadRequest("Користувача із вказаними обліковими даними не знайдено");
+                return BadRequest(new ErrorResponce { Errors = new List<ErrorModel> { new ErrorModel { Message = "Користувача із вказаними обліковими даними не знайдено" } } });
             }
-
             var result = _signInManager
                 .PasswordSignInAsync(user, model.Password, false, false).Result;
             if (!result.Succeeded)
             {
-                return BadRequest(new { invalid = "Email або пароль введено невіроно" });
+                return BadRequest(new ErrorResponce { Errors = new List<ErrorModel> { new ErrorModel { Message = "Email або пароль введено невіроно" } } });
             }
             await _signInManager.SignInAsync(user, isPersistent: false);
             return Ok(_tokenService.CreateToken(user));
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return BadRequest("Error");
+            }
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return BadRequest("Error");
+            }
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (result.Succeeded)
+                return RedirectToAction("Index", "Home");
+            else
+                return BadRequest("Error");
         }
 
         [HttpPost("register")]
@@ -62,14 +89,10 @@ namespace StudentAccountingSystem.Areas.Account
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest("Не валідні данні!");
-                }
-                var userByEmail = _context.Users.SingleOrDefault(u => u.Email == model.Email);
+                var userByEmail = await _userManager.FindByNameAsync(model.Email);
                 if (userByEmail != null)
                 {
-                    return BadRequest("Користувач з даним Email уже зареєстрований");
+                    return BadRequest(new ErrorResponce { Errors = new List<ErrorModel> { new ErrorModel { Message = "Користувач з даним Email уже зареєстрований" } } });
                 }
                 var roleName = "Student";
                 var user = new DbUser
@@ -89,20 +112,33 @@ namespace StudentAccountingSystem.Areas.Account
                 };
                 _context.StudentProfiles.Add(student);
                 _context.SaveChanges();
+
                 result = _userManager.AddToRoleAsync(user, roleName).Result;
-                if (!result.Succeeded)
+
+                if (result.Succeeded)
                 {
-                    return BadRequest("Помилка при реєстрації");
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.Action(
+                        "ConfirmEmail",
+                        "Account",
+                        new { userId = user.Id, code = code },
+                        protocol: HttpContext.Request.Scheme);
+                    //EmailService emailService = new EmailService();
+                    await _emailService.SendEmailAsync(model.Email, "Confirm your account",
+                        $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
+
+                }
+                else
+                {
+                    return BadRequest(new ErrorResponce { Errors = new List<ErrorModel> { new ErrorModel { Message = "Помилка при реєстрації" } } });
                 }
 
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                return Ok(_tokenService.CreateToken(user));
-
+                //await _signInManager.SignInAsync(user, isPersistent: false);
+                return Ok(/*_tokenService.CreateToken(user)*/);
             }
             catch
             {
-                return BadRequest("Помилка при реєстрації!");
-
+                return BadRequest(new ErrorResponce { Errors = new List<ErrorModel> { new ErrorModel { Message = "Помилка при реєстрації" } } });
             }
         }
     }

@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input, Button, Checkbox, Upload } from 'antd';
 import { UploadOutlined } from "@ant-design/icons";
-
-import ImageUploader from "./ImageUploader";
-
 import * as AddCourseActions from "./reducer";
 import { connect } from 'react-redux';
 import Spinner from '../../Spinner';
@@ -16,19 +13,16 @@ class AddCoursePage extends Component {
 
         const onFinish = values => {
             const file = this.state.fileList[0];
-            console.log("This image: ", file)
-            const data = {...values, image: file}
             const formData = new FormData();
             formData.append('name', values.name);
             formData.append('shortDescription', values.shortDescription);
             formData.append('fullDescription', values.fullDescription);
             formData.append('image', file);
-
-            console.log('Success:', formData);
             this.props.addCourse(formData);
         }
-        const { uploading, fileList } = this.state;
-      
+
+        const { fileList } = this.state;
+
         const props = {
             onRemove: file => {
                 this.setState(state => {
@@ -47,14 +41,13 @@ class AddCoursePage extends Component {
             fileList
         };
         return (<div>
-            <div style={{marginBottom: 15, width: "min-content"}}>
-            <Upload { ...props } >
-                <Button >
-                    <UploadOutlined /> Фото курсу
+            <div style={ { marginBottom: 15, width: "min-content" } }>
+                <Upload { ...props } >
+                    <Button >
+                        <UploadOutlined /> Фото курсу
                 </Button>
-            </Upload>
+                </Upload>
             </div>
-           
 
             <Form onFinish={ onFinish }>
                 <Form.Item
@@ -63,12 +56,6 @@ class AddCoursePage extends Component {
                 >
                     <Input placeholder="Назава курсу" />
                 </Form.Item>
-                {/* <Form.Item
-                    name="image"
-                    rules={ [{ required: true, message: 'Please input Image!' }] }
-                >
-                    <Input placeholder="Картинка" />
-                </Form.Item> */}
                 <Form.Item
                     name="shortDescription"
                     rules={ [{ required: true, message: 'Please input Short Description!' }] }

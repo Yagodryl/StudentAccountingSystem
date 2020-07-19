@@ -69,7 +69,14 @@ class ListStudentsPage extends Component {
                     </Form.Item>
                 </Form>
 
-                <Table style={ { overflow: "auto" } } pagination={ pagination } dataSource={ listStudents } onChange={ this.handleTableChange }>
+                <Table style={ { overflow: "auto" } } pagination={ pagination }
+                 dataSource={ listStudents } onChange={ this.handleTableChange }
+                 expandable={{
+                    expandedRowRender: record=> record.studentCourses.map(item=>{
+                         return <p>Назва: {item.name} &nbsp;&nbsp;&nbsp;&nbsp; Початок: {item.startDate}</p>
+                    }),
+                    rowExpandable: record=>record.studentCourses.length>0
+                 }}>
 
                     <Column sorter={ true } title="First Name" dataIndex="firstName" key="firstName" />
                     <Column sorter={ true } title="Last Name" dataIndex="lastName" key="lastName" />

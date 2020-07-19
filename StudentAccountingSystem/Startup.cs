@@ -82,6 +82,7 @@ namespace StudentAccountingSystem
             services.AddScoped<IJWTTokenService, JWTTokenService>();
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IEmailService, EmailService>();
             #endregion
 
             #region Authentication

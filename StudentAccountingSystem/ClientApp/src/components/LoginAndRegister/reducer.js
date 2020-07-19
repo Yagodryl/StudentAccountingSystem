@@ -17,6 +17,7 @@ export const LOGIN_SET_CURRENT_USER = "login/SET_CURRENT_USER";
 const initialState = {
     loading: false,
     success: false,
+    registerSuccess: false,
     registerFailed: false,
     registerErrors: [],
     loginFailed:false,
@@ -72,7 +73,7 @@ export const loginAndRegisterReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: true,
-                success: false,
+                registerSuccess: false,
                 registerFailed: false,
                 registerErrors: []
             }
@@ -81,7 +82,7 @@ export const loginAndRegisterReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
-                success: true,
+                registerSuccess: true,
                 registerFailed: false,
                 registerErrors: []
             }
@@ -90,7 +91,7 @@ export const loginAndRegisterReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
-                success: false,
+                registerSuccess: false,
                 registerFailed: true,
                 registerErrors: action.errors
             }
@@ -136,10 +137,10 @@ export const register = model => {
             .then(
                 response => {
                     dispatch({ type: REGISTER_POST_SUCCESS });
-                    loginByJWT(response.data, dispatch);
-                    const pushUrl = getUrlToRedirect();
-                    console.log("push", pushUrl)
-                    dispatch(push(pushUrl));
+                    // loginByJWT(response.data, dispatch);
+                    // const pushUrl = getUrlToRedirect();
+                    // console.log("push", pushUrl)
+                    // dispatch(push(pushUrl));
                 }, err => {
                     throw err;
                 }
