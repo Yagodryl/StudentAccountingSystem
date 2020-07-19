@@ -20,11 +20,12 @@ namespace StudentAccountingSystem.Services.Implemetation
             smtp.Credentials = new NetworkCredential("dimi4kizuyk@gmail.com", "XXX");
             smtp.EnableSsl = true;
             await smtp.SendMailAsync(m);
-            Console.WriteLine("Письмо отправлено");
         }
+      
     }
     public interface IEmailService
     {
+
         public Task SendEmailAsync(string recipient, string subject, string message);
 
     }

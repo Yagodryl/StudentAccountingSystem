@@ -19,23 +19,23 @@ namespace StudentAccountingSystem.Areas.Account
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
-        private readonly EFDBContext _context;
         private readonly UserManager<DbUser> _userManager;
         private readonly SignInManager<DbUser> _signInManager;
         private readonly IJWTTokenService _tokenService;
         private readonly IEmailService _emailService;
-
-        public AccountController(EFDBContext context,
+        private readonly IAccountService _accountService;
+        public AccountController(
            UserManager<DbUser> userManager,
            SignInManager<DbUser> signInManager,
            IJWTTokenService tokenService,
-           IEmailService emailService)
+           IEmailService emailService,
+           IAccountService accountService)
         {
             _userManager = userManager;
-            _context = context;
             _signInManager = signInManager;
             _tokenService = tokenService;
             _emailService = emailService;
+            _accountService = accountService;
         }
 
 
@@ -110,8 +110,8 @@ namespace StudentAccountingSystem.Areas.Account
                     RegisterDate = DateTime.Now,
                     Birthday = DateTime.Parse(model.Birthday)
                 };
-                _context.StudentProfiles.Add(student);
-                _context.SaveChanges();
+
+                await _accountService.CreateStudentProfile(student);
 
                 result = _userManager.AddToRoleAsync(user, roleName).Result;
 
@@ -124,8 +124,8 @@ namespace StudentAccountingSystem.Areas.Account
                         new { userId = user.Id, code = code },
                         protocol: HttpContext.Request.Scheme);
                     //EmailService emailService = new EmailService();
-                    await _emailService.SendEmailAsync(model.Email, "Confirm your account",
-                        $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
+                    await _emailService.SendEmailAsync(model.Email, "Підтвердіть свій акаунт!",
+                        $"Підтвердіть свій профіль, перейшовши за посиланням: <a href='{callbackUrl}'>link</a>");
 
                 }
                 else

@@ -83,6 +83,7 @@ namespace StudentAccountingSystem
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IReminderService, ReminderService>();
             #endregion
 
             #region Authentication
@@ -121,8 +122,8 @@ namespace StudentAccountingSystem
             IWebHostEnvironment env,
             EFDBContext eFDBContext,
             IBackgroundJobClient backgroundJobClient,
-            IRecurringJobManager recurringJobManager
-            )
+            IRecurringJobManager recurringJobManager,
+            IServiceProvider serviceProvider)
         {
             app.UseCors(
                builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
@@ -149,21 +150,21 @@ namespace StudentAccountingSystem
             app.UseSession();
 
             #region HangFire
-            //app.UseHangfireDashboard();
+            app.UseHangfireDashboard();
 
             //backgroundJobClient.Enqueue(() => Console.WriteLine("SSSS"));
 
-            //recurringJobManager.AddOrUpdate("Message daily",
-            //    () => Console.WriteLine("Test minte"),
-            //    Cron.Daily(8), TimeZoneInfo.Local);
+            recurringJobManager.AddOrUpdate("Message daily",
+                () => serviceProvider.GetService<IReminderService>().RemindDaily(),
+                Cron.Daily(8), TimeZoneInfo.Local);
 
-            //recurringJobManager.AddOrUpdate("Message monthly",
-            //    () => Console.WriteLine("Test minte"),
-            //     Cron.Daily(12), TimeZoneInfo.Local);
+            recurringJobManager.AddOrUpdate("Message monthly",
+                () => serviceProvider.GetService<IReminderService>().RemindMothly(),
+                 Cron.Daily(12), TimeZoneInfo.Local);
 
-            //recurringJobManager.AddOrUpdate("Message weekly",
-            //    () => Console.WriteLine("Test minte"),
-            //    Cron.Daily(12), TimeZoneInfo.Local);
+            recurringJobManager.AddOrUpdate("Message weekly",
+                () => serviceProvider.GetService<IReminderService>().RemindWeekly(),
+                Cron.Daily(12), TimeZoneInfo.Local);
             #endregion
 
             #region InitStaticFiles CourseImages
@@ -220,8 +221,7 @@ namespace StudentAccountingSystem
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
-            
-            
+
 
             //SeederDB.SeedData(app.ApplicationServices, env, this.Configuration);
         }

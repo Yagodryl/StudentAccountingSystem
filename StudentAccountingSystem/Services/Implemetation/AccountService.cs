@@ -214,11 +214,17 @@ namespace StudentAccountingSystem.Services.Implemetation
             return imagePath;
         }
 
+        public async Task CreateStudentProfile(StudentProfile studentProfile)
+        {
+            await _studentProfileRepository.Insert(studentProfile);
+            _studentProfileRepository.Save();
+        }
     }
     public interface IAccountService : IDataService<DbUser>
     {
         public Task<PageStudentItemModel> GetByFilter(FilterViewModel filter);
         public Task<ProfileModel> GetStudentProfile(object id);
         public Task<string> ChangeImage(object userId, IFormFile image);
+        public Task CreateStudentProfile(StudentProfile studentProfile);
     }
 }

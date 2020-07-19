@@ -1,8 +1,8 @@
-import CoursesServices from "./CoursesServices";
+import MyCoursesServices from "./MyCoursesServices"
 
-export const GET_COURSES_STARTED = "courses/GET_COURSES_STARTED";
-export const GET_COURSES_SUCCESS = "courses/GET_COURSES_SUCCESS";
-export const GET_COURSES_FAILED = "courses/GET_COURSES_FAILED";
+export const GET_MY_COURSES_STARTED = "myCourses/GET_MY_COURSES_STARTED";
+export const GET_MY_COURSES_SUCCESS = "myCourses/GET_MY_COURSES_SUCCESS";
+export const GET_MY_COURSES_FAILED = "myCourses/GET_MY_COURSES_FAILED";
 
 const initialState ={
     loading: false,
@@ -12,9 +12,9 @@ const initialState ={
     data: []
 }
 
-export const coursesReducer = (state = initialState, action) => {
+export const myCoursesReducer = (state = initialState, action) => {
     switch (action.type) {
-        case GET_COURSES_STARTED:{
+        case GET_MY_COURSES_STARTED:{
             return {
                 ...state, 
                 loading: true,
@@ -23,7 +23,7 @@ export const coursesReducer = (state = initialState, action) => {
                 errors: {}
             }
         }
-        case GET_COURSES_SUCCESS:{
+        case GET_MY_COURSES_SUCCESS:{
             return {
                 ...state, 
                 loading: false,
@@ -32,7 +32,7 @@ export const coursesReducer = (state = initialState, action) => {
                 data: action.payload
             }
         }
-        case GET_COURSES_FAILED:{
+        case GET_MY_COURSES_FAILED:{
             return {
                 ...state, 
                 loading: false,
@@ -46,19 +46,19 @@ export const coursesReducer = (state = initialState, action) => {
     }
 }
 
-export const getCourses=()=>{
+export const getMyCourses=()=>{
     return dispatch =>{
-        dispatch({type: GET_COURSES_STARTED});
-        CoursesServices.getCourses()
+        dispatch({type: GET_MY_COURSES_STARTED});
+        MyCoursesServices.getMyCourses()
             .then((response)=>{
                 dispatch({
-                    type: GET_COURSES_SUCCESS,
+                    type: GET_MY_COURSES_SUCCESS,
                     payload: response.data
                 })
             })
             .catch(error => {
                 dispatch({
-                    type: GET_COURSES_FAILED,
+                    type: GET_MY_COURSES_FAILED,
                     error: error.response.data
                 })
             });

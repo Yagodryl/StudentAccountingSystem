@@ -40,7 +40,12 @@ namespace StudentAccountingSystem.Areas.Student.Controllers
             return Ok(_courseService.GetById(id, userId).Result);
         }
 
-        
+        [HttpGet("list-my-courses")]
+        public async Task<IActionResult> MyCourses()
+        {
+            var userId = Guid.Parse(User.Claims.ToList()[0].Value);
+            return Ok(await _courseService.GetCoursesByUserId(userId));
+        }
 
         [HttpPost("subscribe")]
         public async Task<IActionResult> Subscribe([FromBody] SubscribeModel model)

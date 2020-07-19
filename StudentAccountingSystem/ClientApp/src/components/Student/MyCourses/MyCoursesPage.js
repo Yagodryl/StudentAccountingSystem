@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
-import { Row, Typography } from 'antd';
-import CourseItem from "../CustomElements/CourseItem"
-import * as CoursesActions from "./reducer";
-import { connect } from 'react-redux';
+import CourseItem from "../CustomElements/CourseItem";
+import { Typography, Row } from 'antd';
+import * as MyCoursesActions from "./reducer";
 import Spinner from '../../Spinner';
+import { connect } from 'react-redux';
+
 
 const { Title } = Typography;
 
-class CoursesPage extends Component {
+class MyCoursesPage extends Component {
     state = {}
 
-    componentDidMount() {
-        this.props.getCourses();
+    componentDidMount(){
+        this.props.getMyCourses();
     }
 
     render() {
-
         const { listCourses = [], isLoading, error } = this.props
 
         const content = listCourses.map(item => {
@@ -28,31 +28,30 @@ class CoursesPage extends Component {
 
         return (
             <React.Fragment>
-                <Title level={ 1 }>Список курсів</Title>
+                <Title level={ 1 }>Мої курси</Title>
                 <Row>
                     { content }
                 </Row>
                 { isLoading && <Spinner /> }
             </React.Fragment>
-
         );
     }
 }
 
-const mapStateToProps = ({ courses }) => {
+const mapStateToProps = ({ myCourses }) => {
     return {
-        listCourses: courses.data,
-        isLoading: courses.loading,
-        isFailed: courses.failed,
-        error: courses.errors
+        listCourses: myCourses.data,
+        isLoading: myCourses.loading,
+        isFailed: myCourses.failed,
+        error: myCourses.errors
     };
 };
 const mapDispatchToProps = dispatch => {
     return {
-        getCourses: () => {
-            dispatch(CoursesActions.getCourses());
+        getMyCourses: () => {
+            dispatch(MyCoursesActions.getMyCourses());
         }
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CoursesPage);
+export default connect(mapStateToProps, mapDispatchToProps)(MyCoursesPage);

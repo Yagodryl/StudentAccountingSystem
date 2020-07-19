@@ -10,6 +10,7 @@ import { coursesReducer } from "../components/Student/Courses/reducer";
 import { listStudentsReducer } from "../components/Admin/ListStudents/reducer";
 import { courseInfoReducer } from "../components/Student/CourseInfo/reducer";
 import { studentProfileReducer } from "../components/Admin/Student/reducer";
+import {myCoursesReducer} from "../components/Student/MyCourses/reducer";
 
 export default function configureStore(history, initialState) {
   const reducers = {
@@ -20,6 +21,7 @@ export default function configureStore(history, initialState) {
     listStudents: listStudentsReducer,
     courseInfo: courseInfoReducer,
     studentProfile: studentProfileReducer,
+    myCourses:myCoursesReducer
   };
 
   const middleware = [

@@ -32,6 +32,9 @@ class MySider extends Component {
         <Menu.Item key="2" icon={<AppstoreOutlined />}>
           <Link to="/student/list-courses">Список курсів</Link>
         </Menu.Item>
+        <Menu.Item key="3" icon={<BookOutlined />}>
+          <Link to="/student/my-courses">Мої курси</Link>
+        </Menu.Item>
         {/* <Menu.Item key="3" icon={<TeamOutlined />}>
           nav 3
         </Menu.Item>

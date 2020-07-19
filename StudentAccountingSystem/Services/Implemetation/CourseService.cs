@@ -136,7 +136,7 @@ namespace StudentAccountingSystem.Services.Implemetation
                                                       .Select(c => new CourseModel
                                                         {
                                                             Id = c.Course.Id,
-                                                            Image = c.Course.Image,
+                                                            Image = Path.Combine(_configuration.GetValue<string>("CourseUrlImages"), $"500_{c.Course.Image}"),
                                                             Name = c.Course.Name,
                                                             ShortDescription = c.Course.ShortDescription
                                                         }).ToListAsync();
