@@ -42,7 +42,7 @@ namespace StudentAccountingSystem.Areas.Admin.Controllers
             return Ok();
         }
         [HttpPost("add-course")]
-        public async Task<IActionResult> AddCourse([FromBody] CourseViewModel model)
+        public async Task<IActionResult> AddCourse(CourseViewModel model )
         {
             await _courseService.AddCourse(model);
             return Ok();

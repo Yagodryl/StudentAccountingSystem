@@ -11,11 +11,15 @@ using StudentAccountingSystem.Areas.Student.ViewModels;
 using StudentAccountingSystem.Areas.Admin.ViewModels;
 using System.IO;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using StudentAccountingSystem.Helpers;
 
 namespace StudentAccountingSystem.Services.Implemetation
 {
     public class CourseService: ICourseService
     {
+        private readonly IWebHostEnvironment _env;
         private readonly IConfiguration _configuration;
         private readonly ICourseRepository _courseRepository;
         private readonly IStudentCourseRepository _studentCourseRepository;
@@ -23,12 +27,14 @@ namespace StudentAccountingSystem.Services.Implemetation
         public CourseService(ICourseRepository courseRepository,
             IStudentCourseRepository studentCourseRepository,
             ICourseDescriptionRepository courseDescriptionRepository,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IWebHostEnvironment env)
         {
             _courseRepository = courseRepository;
             _studentCourseRepository = studentCourseRepository;
             _courseDescriptionRepository = courseDescriptionRepository;
             _configuration = configuration;
+            _env = env;
         }
 
         public Task Delete(params object[] keys)
@@ -47,7 +53,7 @@ namespace StudentAccountingSystem.Services.Implemetation
             {
                 Id = c.Id,
                 Description = c.CourseDescription.Description,
-                Image = c.Image,
+                Image = Path.Combine(_configuration.GetValue<string>("CourseUrlImages"), $"1280_{c.Image}"),
                 ShortDescription = c.ShortDescription,
                 Title = c.Name
             }).SingleOrDefaultAsync(x => x.Id == (Guid)courseId);
@@ -80,9 +86,17 @@ namespace StudentAccountingSystem.Services.Implemetation
             {
                 Name = model.Name,
                 ShortDescription = model.ShortDescription,
-                Image = model.Image,
+                //Image = model.Image,
                 CourseDescriptionId = courseDescription.Id
             };
+
+            string imageName = Guid.NewGuid().ToString() + ".jpg";
+            string pathSaveImage = InitStaticFiles.CreateImageByFileName(_env, _configuration,
+                                                       new string[] { "ImagesPath", "ImagesPathCourse" },
+                                                       imageName, model.Image);
+            if (pathSaveImage != null)
+                course.Image = imageName;
+
 
             await _courseRepository.Insert(course);
             _courseRepository.Save();
@@ -128,6 +142,7 @@ namespace StudentAccountingSystem.Services.Implemetation
                                                         }).ToListAsync();
             return items;
         }
+
     }
     public interface ICourseService:IDataService<Course>
     {
