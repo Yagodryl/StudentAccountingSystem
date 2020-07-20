@@ -44,6 +44,15 @@ namespace StudentAccountingSystem.Areas.Admin.ViewModels
         public ICollection<StudentCoursesModel> StudentCourses { get; set; }
     }
 
+    public class EditStudentProfileModel
+    {
+        public Guid Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+    }
+
+
     public class PageStudentItemModel
     {
         public int TotalCount { get; set; }

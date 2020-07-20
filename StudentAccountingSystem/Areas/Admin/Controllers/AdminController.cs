@@ -12,6 +12,7 @@ using StudentAccountingSystem.Areas.Admin.ViewModels;
 using StudentAccountingSystem.DAL;
 using StudentAccountingSystem.DAL.Entities;
 using StudentAccountingSystem.Services.Implemetation;
+using StudentAccountingSystem.Validators.Responces;
 
 namespace StudentAccountingSystem.Areas.Admin.Controllers
 {
@@ -34,13 +35,6 @@ namespace StudentAccountingSystem.Areas.Admin.Controllers
             _courseService = courseService;
         }
 
-        [HttpPost("upload-course-image")]
-        [RequestSizeLimit(5 * 1024 * 1024)] // size 5mb
-        public IActionResult UploadCourseImage(IFormFile model)
-        {
-
-            return Ok();
-        }
         [HttpPost("add-course")]
         public async Task<IActionResult> AddCourse(CourseViewModel model )
         {
@@ -60,6 +54,19 @@ namespace StudentAccountingSystem.Areas.Admin.Controllers
         public async Task<IActionResult> GetStudentProfile (Guid id)
         {
             return Ok(await _accountService.GetStudentProfile(id));
+        }
+        [HttpPost("edit-student-profile")]
+        public async Task<IActionResult> EditStudentProfile([FromBody] EditStudentProfileModel model)
+        {
+            try
+            {
+                await _accountService.EditProfile(model);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ErrorResponce { Errors = new List<ErrorModel> { new ErrorModel { Message = "При редагуванні сталася помилка!"+ex.Message } } });
+            }
         }
 
     }

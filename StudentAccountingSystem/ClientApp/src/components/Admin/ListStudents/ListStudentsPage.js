@@ -85,7 +85,7 @@ class ListStudentsPage extends Component {
                     <Column sorter={ true } title="Email" dataIndex="email" key="email" />
                     <Column key="action" render={(text, record) => (
                         <Space size="middle">
-                            <Link to={`/admin/student-info/${record.id}`}>Деталі</Link>
+                            <Link to={`/admin/student-info/${record.id}`}>Редагувати</Link>
                         </Space>
                     )}/>
                     {/* <Column title="Registered Date " dataIndex="age" key="age" /> */ }

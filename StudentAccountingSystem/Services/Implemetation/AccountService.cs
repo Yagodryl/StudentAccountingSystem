@@ -169,7 +169,8 @@ namespace StudentAccountingSystem.Services.Implemetation
             var profile = await _accountRepository.GetAll().Select(s => new ProfileModel
             {
                 Id = s.Id,
-                Name = s.StudentProfile.FirstName + ' ' + s.StudentProfile.LastName,
+                FirstName = s.StudentProfile.FirstName,
+                LastName = s.StudentProfile.LastName,
                 Birthday = s.StudentProfile.Birthday.ToString("dd/MM/yyyy"),
                 Email = s.Email,
                 Image = s.StudentProfile.Image,
@@ -219,6 +220,26 @@ namespace StudentAccountingSystem.Services.Implemetation
             await _studentProfileRepository.Insert(studentProfile);
             _studentProfileRepository.Save();
         }
+
+        public async Task EditProfile(EditStudentProfileModel model)
+        {
+            var user = await _accountRepository.GetById(model.Id);
+            user.Email = model.Email;
+            var profile = await _studentProfileRepository.GetById(model.Id);
+            profile.FirstName = model.FirstName;
+            profile.LastName = model.LastName;
+
+            _accountRepository.Save();
+            //await _studentProfileRepository.Update(new StudentProfile
+            //{
+            //    FirstName = model.FirstName,
+            //    LastName = model.LastName
+            //}, model.Id, null);
+            //await _accountRepository.Update(new DbUser
+            //{
+            //    Email = model.Email
+            //}, model.Id, null);
+        }
     }
     public interface IAccountService : IDataService<DbUser>
     {
@@ -226,5 +247,6 @@ namespace StudentAccountingSystem.Services.Implemetation
         public Task<ProfileModel> GetStudentProfile(object id);
         public Task<string> ChangeImage(object userId, IFormFile image);
         public Task CreateStudentProfile(StudentProfile studentProfile);
+        public Task EditProfile(EditStudentProfileModel model);
     }
 }

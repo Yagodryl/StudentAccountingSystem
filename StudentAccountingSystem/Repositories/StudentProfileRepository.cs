@@ -1,4 +1,5 @@
-﻿using StudentAccountingSystem.DAL;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentAccountingSystem.DAL;
 using StudentAccountingSystem.DAL.Entities;
 using StudentAccountingSystem.Repositories.Abstract;
 using System;
@@ -14,10 +15,8 @@ namespace StudentAccountingSystem.Repositories
             :base(context)
         {
         }
-        public override Task<StudentProfile> GetById(object id)
-        {
-            throw new NotImplementedException();
-        }
+        public override async Task<StudentProfile> GetById(object id) =>
+            await GetAll().SingleOrDefaultAsync(c => c.Id == (Guid)id);
     }
     public interface IStudentProfileRepository: IRepository<StudentProfile>
     {
