@@ -40,12 +40,12 @@ namespace StudentAccountingSystem
         {
             services.AddCors();
 
-            services.AddMvc(options => 
+            services.AddMvc(options =>
             {
                 options.EnableEndpointRouting = false;
                 options.Filters.Add<ValidationFilter>();
             })
-                .AddFluentValidation(mvcConfiguration=> mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>());
+                .AddFluentValidation(mvcConfiguration => mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>());
             var options = new DbContextOptionsBuilder();
             services.AddDbContext<EFDBContext>
                 (options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
@@ -55,6 +55,8 @@ namespace StudentAccountingSystem
             services.AddIdentity<DbUser, DbRole>(options => options.Stores.MaxLengthForKeys = 128)
                 .AddEntityFrameworkStores<EFDBContext>()
                 .AddDefaultTokenProviders();
+
+            services.Configure<FacebookAuthSettings>(Configuration.GetSection(nameof(FacebookAuthSettings)));
 
             services.AddSession();
 
@@ -93,7 +95,8 @@ namespace StudentAccountingSystem
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(cfg =>
+            })
+            .AddJwtBearer(cfg =>
             {
                 cfg.RequireHttpsMetadata = false;
                 cfg.SaveToken = true;
@@ -108,6 +111,9 @@ namespace StudentAccountingSystem
                     ClockSkew = TimeSpan.Zero
                 };
             });
+
+            services.AddAuthorization();
+
             #endregion
 
             // In production, the React files will be served from this directory
@@ -143,11 +149,12 @@ namespace StudentAccountingSystem
                 app.UseExceptionHandler("/Error");
             }
 
-            app.UseAuthentication();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseRouting();
             app.UseSession();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             #region HangFire
             //app.UseHangfireDashboard();
@@ -222,7 +229,7 @@ namespace StudentAccountingSystem
             });
 
 
-            //SeederDB.SeedData(app.ApplicationServices, env, this.Configuration);
+            SeederDB.SeedData(app.ApplicationServices, env, this.Configuration);
         }
     }
 }

@@ -13,7 +13,7 @@ class ProfilePage extends Component {
 
 
     render() {
-        const { id, name, email, image, birthday } = this.props.stydentProfile;
+        const { id, firstName, lastName, email, image, birthday } = this.props.stydentProfile;
 
         const props = {
             name: 'file',
@@ -40,7 +40,7 @@ class ProfilePage extends Component {
                     </Upload>
                 </Col>
                 <Col xs={ 24 } md={ 12 } xl={ 16 } style={ { paddingLeft: 20, paddingRight: 20 } }>
-                    <Title>{ name }</Title>
+                    <Title>{ `${firstName} ${lastName}` }</Title>
                     <Title level={ 3 }>Email: { email }</Title>
                     <Title level={ 3 }>Дата народження: { birthday }</Title>
                 </Col>

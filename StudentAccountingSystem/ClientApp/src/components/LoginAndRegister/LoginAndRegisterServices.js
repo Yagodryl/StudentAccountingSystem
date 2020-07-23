@@ -7,4 +7,7 @@ export default class LoginAndRegisterServices {
     static register(model) {
         return axios.post(`api/account/register`,model)
     }
+    static loginFacebook(model){
+        return axios.post(`api/ExternalAuth/facebook`, model)
+    }
 }

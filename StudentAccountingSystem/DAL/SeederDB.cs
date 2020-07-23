@@ -39,7 +39,7 @@ namespace StudentAccountingSystem.DAL
                 {
                     Email = "admin@gmail.com",
                     UserName = "admin@gmail.com",
-             
+                    EmailConfirmed=true
                 };
                 var result = userManager.CreateAsync(user, "Qwerty1-").Result;             
                 result = userManager.AddToRoleAsync(user, "Admin").Result;
@@ -47,7 +47,7 @@ namespace StudentAccountingSystem.DAL
                 {
                     Email = "email@gmail.com",
                     UserName = "email@gmail.com",
-
+                    EmailConfirmed = true
                 };
                 
                 result = userManager.CreateAsync(user, "Qwerty1-").Result;

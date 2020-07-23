@@ -8,6 +8,10 @@ export const LOGIN_POST_STARTED = "login/LOGIN_POST_STARTED";
 export const LOGIN_POST_SUCCESS = "login/LOGIN_POST_SUCCESS";
 export const LOGIN_POST_FAILED = "login/LOGIN_POST_FAILED";
 
+export const LOGIN_FACEBOOK_STARTED = "facebook/LOGIN_FACEBOOK_STARTED";
+export const LOGIN_FACEBOOK_SUCCESS = "facebook/LOGIN_FACEBOOK_SUCCESS";
+export const LOGIN_FACEBOOK_FAILED = "facebook/LOGIN_FACEBOOK_FAILED";
+
 export const REGISTER_POST_STARTED = "register/REGISTER_POST_STARTED";
 export const REGISTER_POST_SUCCESS = "register/REGISTER_POST_SUCCESS";
 export const REGISTER_POST_FAILED = "register/REGISTER_POST_FAILED";
@@ -52,6 +56,34 @@ export const loginAndRegisterReducer = (state = initialState, action) => {
             }
         }
         case LOGIN_POST_FAILED: {
+            return {
+                ...state,
+                loading: false,
+                success: false,
+                loginFailed: true,
+                loginErrors: action.errors
+            }
+        }
+
+        case LOGIN_FACEBOOK_STARTED: {
+            return {
+                ...state,
+                loading: true,
+                success: false,
+                loginFailed : false,
+                loginErrors: []
+            }
+        }
+        case LOGIN_FACEBOOK_SUCCESS: {
+            return {
+                ...state,
+                loading: false,
+                success: true,
+                loginFailed: false,
+                loginErrors: []
+            }
+        }
+        case LOGIN_FACEBOOK_FAILED: {
             return {
                 ...state,
                 loading: false,
@@ -109,7 +141,6 @@ export const login = model => {
                     dispatch({ type: LOGIN_POST_SUCCESS });
                     loginByJWT(response.data, dispatch);
                     const pushUrl = getUrlToRedirect();
-                    console.log("push", pushUrl)
                     dispatch(push(pushUrl));
                 }, err => {
                     throw err;
@@ -118,6 +149,29 @@ export const login = model => {
             .catch(err => {
                 dispatch({
                     type: LOGIN_POST_FAILED,
+                    errors: err.response.data.errors
+                });
+            });
+    }
+}
+
+export const loginFacebook = model=>{
+    return dispatch =>{
+        dispatch({type: LOGIN_FACEBOOK_STARTED});
+        LoginAndRegisterServices.loginFacebook(model)
+            .then(
+                response=>{
+                    dispatch({type: LOGIN_FACEBOOK_SUCCESS});
+                    loginByJWT(response.data, dispatch);
+                    const pushUrl = getUrlToRedirect();
+                    dispatch(push(pushUrl));
+                }, err => {
+                    throw err;
+                }
+            )
+            .catch(err => {
+                dispatch({
+                    type: LOGIN_FACEBOOK_FAILED,
                     errors: err.response.data.errors
                 });
             });
@@ -180,9 +234,7 @@ function getUrlToRedirect() {
 
 export const loginByJWT = (token, dispatch) => {
 
-    console.log('Hello app Token: ', token);
     var user = jwt.decode(token);
-    console.log('Hello app User: ', user);
     if (!Array.isArray(user.roles)) {
         user.roles = Array.of(user.roles);
     }
