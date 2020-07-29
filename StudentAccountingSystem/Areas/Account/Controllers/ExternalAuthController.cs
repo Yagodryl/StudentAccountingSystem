@@ -60,8 +60,16 @@ namespace StudentAccountingSystem.Areas.Account.Controllers
                 }
                 var userInfoResponse = await Client.GetStringAsync($"https://graph.facebook.com/v2.8/me?fields=id,email,first_name,last_name,name,gender,locale,birthday,picture&access_token={model.AccessToken}");
                 var userInfo = JsonConvert.DeserializeObject<FacebookUserData>(userInfoResponse);
-
-                var user = await _userManager.FindByEmailAsync(userInfo.Email);
+                string email;
+                if (userInfo.Email != null)
+                {
+                    email = userInfo.Email;
+                }
+                else
+                {
+                    email = (userInfo.FirstName + userInfo.LastName + "@mail.com").ToLower();
+                }
+                var user = await _userManager.FindByEmailAsync(email);
 
                 if (user == null)
                 {
@@ -69,8 +77,8 @@ namespace StudentAccountingSystem.Areas.Account.Controllers
 
                     var userProf = new DbUser
                     {
-                        UserName = userInfo.Email,
-                        Email = userInfo.Email,
+                        UserName = email,
+                        Email = email,
                         FacebookId = userInfo.Id,
                         EmailConfirmed = true
                     };
@@ -92,14 +100,18 @@ namespace StudentAccountingSystem.Areas.Account.Controllers
                     }
 
                 }
-                var localUser = await _userManager.FindByNameAsync(userInfo.Email);
+                var localUser = await _userManager.FindByNameAsync(email);
                 await _signInManager.SignInAsync(localUser, isPersistent: false);
 
                 return Ok(_tokenService.CreateToken(localUser));
             }
             catch
             {
-                return BadRequest(new ErrorResponce { Errors = new List<ErrorModel> { new ErrorModel { Message = "Помилка при вході" } } });
+                return BadRequest(new ErrorResponce
+                {
+                    Errors = new List<ErrorModel> { new ErrorModel { Message = "Помилка при вході" }
+}
+                });
 
             }
         }

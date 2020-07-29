@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CourseItem from "../CustomElements/CourseItem";
-import { Typography, Row } from 'antd';
+import { Typography, Row, Alert } from 'antd';
 import * as MyCoursesActions from "./reducer";
 import Spinner from '../../Spinner';
 import { connect } from 'react-redux';
@@ -29,6 +29,7 @@ class MyCoursesPage extends Component {
         return (
             <React.Fragment>
                 <Title level={ 1 }>Мої курси</Title>
+                {listCourses.length==0 && <Alert type="warning" message="Ви не підписані ні на один курс!"></Alert>}
                 <Row>
                     { content }
                 </Row>

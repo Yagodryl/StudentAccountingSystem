@@ -127,6 +127,17 @@ namespace StudentAccountingSystem.Services.Implemetation
                 ShortDescription = c.ShortDescription
             }).ToListAsync());
         }
+        public async Task<IEnumerable<FullCourseModel>> GetFullListCourses()
+        {
+            return (await _courseRepository.GetAll().Select(c => new FullCourseModel
+            {
+                Id = c.Id,
+                Image = Path.Combine(_configuration.GetValue<string>("CourseUrlImages"), $"50_{c.Image}"),
+                Name = c.Name,
+                ShortDescription = c.ShortDescription,
+                Description = c.CourseDescription.Description
+            }).ToListAsync());
+        }
 
 
         public async Task<List<CourseModel>> GetCoursesByUserId(object userId)
@@ -151,6 +162,7 @@ namespace StudentAccountingSystem.Services.Implemetation
         public Task AddCourse(CourseViewModel model);
         public Task<List<CourseModel>> GetCoursesByUserId(object userId);
         public Task<IEnumerable<CourseModel>> GetCourses();
+        public Task<IEnumerable<FullCourseModel>> GetFullListCourses();
 
     }
 }

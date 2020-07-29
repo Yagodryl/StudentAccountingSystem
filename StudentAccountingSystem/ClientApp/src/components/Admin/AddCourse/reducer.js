@@ -9,7 +9,7 @@ const initialState ={
     loading: false,
     success: false,
     failed: false,
-    errors: {},
+    errors: [],
 }
 
 export const addCourseReducer = (state = initialState, action) => {
@@ -20,7 +20,7 @@ export const addCourseReducer = (state = initialState, action) => {
                 loading: true,
                 success: false,
                 failed: false,
-                errors: {}
+                errors: []
             }
         }
         case ADD_COURSE_SUCCESS:{
@@ -29,7 +29,7 @@ export const addCourseReducer = (state = initialState, action) => {
                 loading: false,
                 success: true,
                 failed: false,
-                errors: {}
+                errors: []
             }
         }
         case ADD_COURSE_FAILED:{
@@ -52,12 +52,12 @@ export const addCourse=(model)=>{
         AddCourseServices.addCourse(model)
         .then(()=>{
             dispatch({type: ADD_COURSE_SUCCESS});
-            dispatch(push("/admin/list-students"))
+            // dispatch(push("/admin/list-students"))
         })
         .catch((err)=>{
             dispatch({
                 type: ADD_COURSE_FAILED,
-                errors: err.response.data
+                errors: err.response.data.errors
             });
         })
     }

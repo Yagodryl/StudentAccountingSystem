@@ -17,7 +17,7 @@ namespace StudentAccountingSystem.Services.Implemetation
             m.Subject = subject;
             m.Body = message;
             SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
-            smtp.Credentials = new NetworkCredential("dimi4kizuyk@gmail.com", "XXX");
+            smtp.Credentials = new NetworkCredential("dimi4kizuyk@gmail.com", "SSyg313567");
             smtp.EnableSsl = true;
             await smtp.SendMailAsync(m);
         }

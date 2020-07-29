@@ -38,16 +38,29 @@ namespace StudentAccountingSystem.Areas.Admin.Controllers
         [HttpPost("add-course")]
         public async Task<IActionResult> AddCourse(CourseViewModel model )
         {
+            try
+            {
             await _courseService.AddCourse(model);
             return Ok();
+            }
+            catch
+            {
+                return BadRequest(new ErrorResponce { Errors = new List<ErrorModel> { new ErrorModel { Message = "При додаванні сталася помилка!" } } });
+            }
         }
 
         [HttpPost("get-list-students")]
         public async Task<IActionResult> GetStudents([FromBody] FilterViewModel filter)
         {
             var pageStudent = await _accountService.GetByFilter(filter);
-
             return Ok(pageStudent);
+        }
+
+        [HttpGet("get-list-courses")]
+        public async Task<IActionResult> GetCourses()
+        {
+            var items = await _courseService.GetFullListCourses();
+            return Ok(items);
         }
 
         [HttpGet("get-student-profile/{id}")]
@@ -63,9 +76,9 @@ namespace StudentAccountingSystem.Areas.Admin.Controllers
                 await _accountService.EditProfile(model);
                 return Ok();
             }
-            catch (Exception ex)
+            catch
             {
-                return BadRequest(new ErrorResponce { Errors = new List<ErrorModel> { new ErrorModel { Message = "При редагуванні сталася помилка!"+ex.Message } } });
+                return BadRequest(new ErrorResponce { Errors = new List<ErrorModel> { new ErrorModel { Message = "При редагуванні сталася помилка!"} } });
             }
         }
 

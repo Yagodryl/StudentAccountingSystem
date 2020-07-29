@@ -14,7 +14,6 @@ class StudentPage extends Component {
 
     componentDidMount() {
         const { id } = this.props.match.params;
-        console.log("StudentId: ", id);
         this.props.getStudentProfile(id);
     }
 

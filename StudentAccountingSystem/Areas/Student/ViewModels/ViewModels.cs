@@ -33,6 +33,24 @@ namespace StudentAccountingSystem.Areas.Student.ViewModels
         [JsonPropertyName("description")]
         public string ShortDescription { get; set; }
     }
+    public class FullCourseModel
+    {
+        [Required]
+        [JsonPropertyName("key")]
+        public Guid Id { get; set; }
+
+        [Required(AllowEmptyStrings = true)]
+        public string Name { get; set; }
+
+        [Required(AllowEmptyStrings = true)]
+        public string Image { get; set; }
+
+        [Required(AllowEmptyStrings = true)]
+        public string ShortDescription { get; set; }
+
+        [Required(AllowEmptyStrings = true)]
+        public string Description { get; set; }
+    }
     public class CourseInfoModel
     {
         [Required]

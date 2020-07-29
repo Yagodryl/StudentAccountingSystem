@@ -57,9 +57,9 @@ class Login extends Component {
                             <Button type="primary" htmlType="submit" className="login-form-button">
                                 Вхід
                             </Button>
-                            <a className="login-form-forgot" href="#">
+                            {/* <a className="login-form-forgot" href="#">
                                 Забув пароль
-                            </a>
+                            </a> */}
                         </Row>
                     </Form.Item>
                 </Form>

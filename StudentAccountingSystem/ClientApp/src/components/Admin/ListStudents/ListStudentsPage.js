@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Table, Tag, Space, Input, Button, Form } from 'antd';
+import { Table, Space, Input, Button, Form } from 'antd';
 
 import * as ListStudentsActions from "./reducer";
 import { connect } from 'react-redux';
 import Spinner from '../../Spinner';
 import { Link } from 'react-router-dom';
 
-const { Column, ColumnGroup } = Table;
+const { Column } = Table;
 
 class ListStudentsPage extends Component {
     state = {
@@ -72,16 +72,16 @@ class ListStudentsPage extends Component {
                 <Table style={ { overflow: "auto" } } pagination={ pagination }
                  dataSource={ listStudents } onChange={ this.handleTableChange }
                  expandable={{
-                    expandedRowRender: record=> record.studentCourses.map(item=>{
-                         return <p>Назва: {item.name} &nbsp;&nbsp;&nbsp;&nbsp; Початок: {item.startDate}</p>
+                    expandedRowRender: record=> record.studentCourses.map((item, index)=>{
+                         return <p key={index}>Назва: {item.name} &nbsp;&nbsp;&nbsp;&nbsp; Початок: {item.startDate}</p>
                     }),
                     rowExpandable: record=>record.studentCourses.length>0
                  }}>
 
-                    <Column sorter={ true } title="First Name" dataIndex="firstName" key="firstName" />
-                    <Column sorter={ true } title="Last Name" dataIndex="lastName" key="lastName" />
-                    <Column sorter={ true } title="Age" dataIndex="age" key="age" />
-                    <Column sorter={ true } title="Register Date" dataIndex="registerDate" key="registerDate" />
+                    <Column sorter={ true } title="Ім'я" dataIndex="firstName" key="firstName" />
+                    <Column sorter={ true } title="Прізвище" dataIndex="lastName" key="lastName" />
+                    <Column sorter={ true } title="Вік" dataIndex="age" key="age" />
+                    <Column sorter={ true } title="Дата реєтрації" dataIndex="registerDate" key="registerDate" />
                     <Column sorter={ true } title="Email" dataIndex="email" key="email" />
                     <Column key="action" render={(text, record) => (
                         <Space size="middle">

@@ -20,6 +20,10 @@ class CourseInfoPage extends Component {
     }
     render() {
         const { isLoading, CourseInfo } = this.props;
+        const { loading, success, failed, errors=[] } = this.props.subscribe;
+        const errorsMess = errors.map((item, index) => {
+            return <p key={ index }>{ item.message }</p>;
+        })
         return (
             <div>
                 { isLoading && <Spinner /> }
@@ -32,13 +36,16 @@ class CourseInfoPage extends Component {
                     </Col>
                     <Col style={ { padding: 15 } } xs={ 24 } sm={ 12 }>
                         <span style={ { whiteSpace: "pre-line" } }> { CourseInfo.shortDescription }</span>
-                        { (CourseInfo.isSubscribed == true) ? <Alert message={ `Ви вже підписані на данний курс! Початок занять ${CourseInfo.startDate}` } type="warning" /> :
-                            <SubscribeForm subscribe={ this.subsctibe } /> }
+
+                        { (CourseInfo.isSubscribed == true) ? (<Alert message={ `Ви вже підписані на данний курс! Початок занять ${CourseInfo.startDate}` } type="warning" />) :
+                           ((success == true)? (<Alert message="Ви підписались на курс!" type="success"/>):(<SubscribeForm subscribe={ this.subsctibe } /> ))}
+                          
+                           { failed && <Alert style={ { marginTop: '5px' } } type='error' message={ errorsMess }></Alert>}
                     </Col>
                 </Row>
-                <div style={ { padding: 15 } }>
-                    <span style={ { whiteSpace: "pre-line" } }> { CourseInfo.description }</span>
-                </div>
+                    <div style={ { padding: 15 } }>
+                        <span style={ { whiteSpace: "pre-line" } }> { CourseInfo.description }</span>
+                    </div>
             </div>
         );
     }
@@ -46,19 +53,20 @@ class CourseInfoPage extends Component {
 
 const mapStateToProps = ({ courseInfo }) => {
     return {
-        CourseInfo: courseInfo.data,
+                    CourseInfo: courseInfo.data,
         isLoading: courseInfo.loading,
         isFailed: courseInfo.failed,
-        error: courseInfo.errors
+        error: courseInfo.errors,
+        subscribe: courseInfo.subscribe
     };
 };
 const mapDispatchToProps = dispatch => {
     return {
-        getCourseInfo: (id) => {
-            dispatch(CourseInfoActions.getCourseInfo(id));
+                    getCourseInfo: (id) => {
+                    dispatch(CourseInfoActions.getCourseInfo(id));
         },
         subscribeCourse: (model) => {
-            dispatch(CourseInfoActions.subscribe(model));
+                    dispatch(CourseInfoActions.subscribe(model));
         }
     }
 }

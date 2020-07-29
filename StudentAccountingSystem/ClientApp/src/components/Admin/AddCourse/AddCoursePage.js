@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Checkbox, Upload } from 'antd';
+import { Form, Input, Button, Checkbox, Upload, Alert } from 'antd';
 import { UploadOutlined } from "@ant-design/icons";
 import * as AddCourseActions from "./reducer";
 import { connect } from 'react-redux';
 import Spinner from '../../Spinner';
+import { FormInstance } from 'antd/lib/form';
 
 class AddCoursePage extends Component {
     state = {
         fileList: [],
     }
+
+    formRef = React.createRef();
+    onReset = () => {
+        this.formRef.current.resetFields();
+        this.setState({ fileList: [] });
+
+    };
+
     render() {
 
         const onFinish = values => {
@@ -40,7 +49,14 @@ class AddCoursePage extends Component {
             },
             fileList
         };
+        const { failed, errors = [], success } = this.props;
+
+        const errorsMess = errors.map((item, index) => {
+            return <p key={ index }>{ item.message }</p>;
+        })
         return (<div>
+            { failed && <Alert style={ { marginBottom: '15px' } } type='error' message={ errorsMess }></Alert> }
+            { success && <Alert style={ { marginBottom: '15px' } } type='success' message="Курс додано!"></Alert> }
             <div style={ { marginBottom: 15, width: "min-content" } }>
                 <Upload { ...props } >
                     <Button >
@@ -49,7 +65,7 @@ class AddCoursePage extends Component {
                 </Upload>
             </div>
 
-            <Form onFinish={ onFinish }>
+            <Form onFinish={ onFinish } ref={ this.formRef }>
                 <Form.Item
                     name="name"
                     rules={ [{ required: true, message: 'Please input Name!' }] }
@@ -69,7 +85,8 @@ class AddCoursePage extends Component {
                     <Input.TextArea rows={ 8 } placeholder="Повний опис" />
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" >Submit</Button>
+                    <Button type="primary" htmlType="submit" style={ { marginRight: '10px' } } >Submit</Button>
+                    <Button htmlType="button" onClick={ this.onReset }>Clear</Button>
                 </Form.Item>
             </Form>
             { this.props.loading && <Spinner /> }

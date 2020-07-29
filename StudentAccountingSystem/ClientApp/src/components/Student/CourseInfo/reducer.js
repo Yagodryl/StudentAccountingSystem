@@ -10,66 +10,79 @@ export const SUBSCRIBE_SUCCESS = "courseInfo/SUBSCRIBE_SUCCESS";
 export const SUBSCRIBE_FAILED = "courseInfo/SUBSCRIBE_FAILED";
 
 
-const initialState ={
+const initialState = {
     loading: false,
     success: false,
     failed: false,
-    errors: {},
-    data: {}
+    errors: [],
+    data: {},
+    subscribe: {
+        loading: false,
+        success: false,
+        failed: false,
+        errors: [],
+    }
 }
 export const courseInfoReducer = (state = initialState, action) => {
     switch (action.type) {
-        case GET_COURSE_STARTED:{
+        case GET_COURSE_STARTED: {
             return {
-                ...state, 
+                ...state,
                 loading: true,
                 success: false,
                 failed: false,
-                errors: {}
+                errors: []
             }
         }
-        case GET_COURSE_SUCCESS:{
+        case GET_COURSE_SUCCESS: {
             return {
-                ...state, 
+                ...state,
                 loading: false,
                 success: true,
                 failed: false,
                 data: action.payload
             }
         }
-        case GET_COURSE_FAILED:{
+        case GET_COURSE_FAILED: {
             return {
-                ...state, 
+                ...state,
                 loading: false,
                 success: false,
                 failed: true,
-                errors: action.error
+                errors: action.errors
             }
         }
-        case SUBSCRIBE_STARTED:{
+        case SUBSCRIBE_STARTED: {
             return {
-                ...state, 
-                loading: true,
-                success: false,
-                failed: false,
-                errors: {}
+                ...state,
+                subscribe: {
+                    loading: true,
+                    success: false,
+                    failed: false,
+                    errors: []
+                }
             }
         }
-        case SUBSCRIBE_SUCCESS:{
+        case SUBSCRIBE_SUCCESS: {
             return {
-                ...state, 
-                loading: false,
-                success: true,
-                failed: false,
+                ...state,
+                subscribe: {
+                    loading: false,
+                    success: true,
+                    failed: false,
+                }
             }
         }
-        case SUBSCRIBE_FAILED:{
+        case SUBSCRIBE_FAILED: {
             return {
-                ...state, 
-                loading: false,
-                success: false,
-                failed: true,
-                errors: action.error
+                ...state,
+                subscribe: {
+
+                    loading: false,
+                    success: false,
+                    failed: true,
+                    errors: action.errors
+                }
             }
         }
         default: return state;
@@ -77,11 +90,11 @@ export const courseInfoReducer = (state = initialState, action) => {
     }
 }
 
-export const getCourseInfo=(id)=>{
-    return dispatch =>{
-        dispatch({type: GET_COURSE_STARTED});
+export const getCourseInfo = (id) => {
+    return dispatch => {
+        dispatch({ type: GET_COURSE_STARTED });
         CourseInfoServices.getCourseInfo(id)
-            .then((response)=>{
+            .then((response) => {
                 dispatch({
                     type: GET_COURSE_SUCCESS,
                     payload: response.data
@@ -90,26 +103,26 @@ export const getCourseInfo=(id)=>{
             .catch(error => {
                 dispatch({
                     type: GET_COURSE_FAILED,
-                    error: error.response.data
+                    errors: error.response.data
                 })
             });
     }
 }
 
-export const subscribe=(model)=>{
-    return dispatch =>{
-        dispatch({type: SUBSCRIBE_STARTED});
+export const subscribe = (model) => {
+    return dispatch => {
+        dispatch({ type: SUBSCRIBE_STARTED });
         CourseInfoServices.subscribe(model)
-            .then(()=>{
+            .then(() => {
                 dispatch({
                     type: SUBSCRIBE_SUCCESS
                 })
-                dispatch(push('/student/profile'));
+                // dispatch(push('/student/profile'));
             })
             .catch(error => {
                 dispatch({
                     type: SUBSCRIBE_FAILED,
-                    error: error.response.data
+                    errors: error.response.data.errors
                 })
             });
     }

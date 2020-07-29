@@ -20,13 +20,13 @@ namespace StudentAccountingSystem.Areas.Account.ViewModels
         [JsonProperty("last_name")]
         public string LastName { get; set; }
         public string Birthday { get; set; }
-        public FacebookPictureData Picture { get; set; }
+       // public FacebookPictureData Picture { get; set; }
     }
 
-    internal class FacebookPictureData
-    {
-        public FacebookPicture Data { get; set; }
-    }
+    //internal class FacebookPictureData
+    //{
+    //    public FacebookPicture Data { get; set; }
+    //}
 
     internal class FacebookPicture
     {

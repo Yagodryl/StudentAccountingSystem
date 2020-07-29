@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -125,7 +126,7 @@ namespace StudentAccountingSystem.Areas.Account
                         protocol: HttpContext.Request.Scheme);
                     //EmailService emailService = new EmailService();
                     await _emailService.SendEmailAsync(model.Email, "Підтвердіть свій акаунт!",
-                        $"Підтвердіть свій профіль, перейшовши за посиланням: <a href='{callbackUrl}'>link</a>");
+                       $"Підтвердіть свій профіль, перейшовши за посиланням: <a href='{callbackUrl}'>link</a>");
 
                 }
                 else

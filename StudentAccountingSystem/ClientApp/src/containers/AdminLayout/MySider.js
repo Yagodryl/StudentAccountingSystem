@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Layout, Menu } from 'antd';
 import {
     UserOutlined,
-    BookOutlined
+    BookOutlined,
+    AppstoreOutlined
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 
@@ -32,6 +33,9 @@ class MySider extends Component {
                     </Menu.Item>
                     <Menu.Item key="2" icon={ <BookOutlined /> }>
                         <Link to="/admin/add-course">Додати курс</Link>
+                    </Menu.Item>
+                    <Menu.Item key="3" icon={ <AppstoreOutlined /> }>
+                        <Link to="/admin/list-courses">Список курсів</Link>
                     </Menu.Item>
                 </Menu>
             </Sider>);

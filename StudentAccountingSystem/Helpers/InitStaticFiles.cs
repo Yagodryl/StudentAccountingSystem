@@ -37,8 +37,8 @@ namespace StudentAccountingSystem.Helpers
             bool fileBeginCreated = false;
             string fileDestDir = env.ContentRootPath;
 
-            //try
-            //{
+            try
+            {
                 foreach (var pathConfig in settingsFolder)
                 {
                     fileDestDir = Path.Combine(fileDestDir, configuration.GetValue<string>(pathConfig));
@@ -72,23 +72,23 @@ namespace StudentAccountingSystem.Helpers
                         }
                     }
                 }
-            //}
-            //catch
-            //{
-            //    if (fileBeginCreated)
-            //    {
-            //        foreach (var imagePrefix in imageSizes)
-            //        {
-            //            string fileImage = Path.Combine(fileDestDir, $"{imagePrefix}_{fileName}");
-            //            if (File.Exists(fileImage))
-            //            {
-            //                File.Delete(fileImage);
-            //            }
-            //        }
-            //    }
-            //    return null;
-            //}
-            return fileDestDir;
+                return fileDestDir;
+            }
+            catch
+            {
+                if (fileBeginCreated)
+                {
+                    foreach (var imagePrefix in imageSizes)
+                    {
+                        string fileImage = Path.Combine(fileDestDir, $"{imagePrefix}_{fileName}");
+                        if (File.Exists(fileImage))
+                        {
+                            File.Delete(fileImage);
+                        }
+                    }
+                }
+                return null;
+            }
         }
 
     }

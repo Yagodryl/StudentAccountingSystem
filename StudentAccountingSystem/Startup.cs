@@ -157,20 +157,19 @@ namespace StudentAccountingSystem
             app.UseAuthorization();
 
             #region HangFire
-            //app.UseHangfireDashboard();
+            app.UseHangfireDashboard();
 
+            recurringJobManager.AddOrUpdate("Message before day",
+                () => serviceProvider.GetService<IReminderService>().RemindDaily(),
+                Cron.Daily(8), TimeZoneInfo.Local);
 
-            //recurringJobManager.AddOrUpdate("Message daily",
-            //    () => serviceProvider.GetService<IReminderService>().RemindDaily(),
-            //    Cron.Daily(8), TimeZoneInfo.Local);
+            recurringJobManager.AddOrUpdate("Message before month",
+                () => serviceProvider.GetService<IReminderService>().RemindMothly(),
+                 Cron.Daily(12), TimeZoneInfo.Local);
 
-            //recurringJobManager.AddOrUpdate("Message monthly",
-            //    () => serviceProvider.GetService<IReminderService>().RemindMothly(),
-            //     Cron.Daily(12), TimeZoneInfo.Local);
-
-            //recurringJobManager.AddOrUpdate("Message weekly",
-            //    () => serviceProvider.GetService<IReminderService>().RemindWeekly(),
-            //    Cron.Daily(12), TimeZoneInfo.Local);
+            recurringJobManager.AddOrUpdate("Message before week",
+                () => serviceProvider.GetService<IReminderService>().RemindWeekly(),
+                Cron.Daily(12), TimeZoneInfo.Local);
             #endregion
 
             #region InitStaticFiles CourseImages
