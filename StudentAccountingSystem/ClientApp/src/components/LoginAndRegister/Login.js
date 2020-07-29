@@ -17,7 +17,6 @@ class Login extends Component {
 
 
         const responseFacebook = (response) => {
-            console.log("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", response);
             this.props.loginFacebook(response);
           }
         

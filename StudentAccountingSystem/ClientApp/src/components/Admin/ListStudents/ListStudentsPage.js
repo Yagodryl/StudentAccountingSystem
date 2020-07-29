@@ -26,16 +26,15 @@ class ListStudentsPage extends Component {
     handleTableChange = (pagination, filters, sorter,) => {
         const { current, pageSize } = pagination;
         const { field, order } = sorter;
-        const {searchFirstName, searchLastName} = this.state;
-        this.props.getListStudents({ current, pageSize, field, order,searchFirstName, searchLastName });
+        const { searchFirstName, searchLastName } = this.state;
+        this.props.getListStudents({ current, pageSize, field, order, searchFirstName, searchLastName });
     };
 
-    onSearch = (values)=>{
-        //console.log("onSearch",values)
+    onSearch = (values) => {
         this.setState(values);
 
-        const {pageSize} = this.state.pagination;
-        this.props.getListStudents({current:1, pageSize ,...values});
+        const { pageSize } = this.state.pagination;
+        this.props.getListStudents({ current: 1, pageSize, ...values });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -51,18 +50,18 @@ class ListStudentsPage extends Component {
     }
 
     render() {
-        const { listStudents = [], isLoading} = this.props;
+        const { listStudents = [], isLoading } = this.props;
         const { pagination } = this.state;
 
         return (
             <React.Fragment>
 
-                <Form onFinish={this.onSearch} layout={"inline"} style={{marginBottom: "15px"}}>
+                <Form onFinish={ this.onSearch } layout={ "inline" } style={ { marginBottom: "15px" } }>
                     <Form.Item name="searchFirstName" label="Ім'я">
-                        <Input type="text"/>
+                        <Input type="text" />
                     </Form.Item>
                     <Form.Item name="searchLastName" label="Прізвище">
-                        <Input type="text"/>
+                        <Input type="text" />
                     </Form.Item>
                     <Form.Item>
                         <Button type="primary" htmlType="submit">Пошук</Button>
@@ -70,24 +69,24 @@ class ListStudentsPage extends Component {
                 </Form>
 
                 <Table style={ { overflow: "auto" } } pagination={ pagination }
-                 dataSource={ listStudents } onChange={ this.handleTableChange }
-                 expandable={{
-                    expandedRowRender: record=> record.studentCourses.map((item, index)=>{
-                         return <p key={index}>Назва: {item.name} &nbsp;&nbsp;&nbsp;&nbsp; Початок: {item.startDate}</p>
-                    }),
-                    rowExpandable: record=>record.studentCourses.length>0
-                 }}>
+                    dataSource={ listStudents } onChange={ this.handleTableChange }
+                    expandable={ {
+                        expandedRowRender: record => record.studentCourses.map((item, index) => {
+                            return <p key={ index }>Назва: { item.name } &nbsp;&nbsp;&nbsp;&nbsp; Початок: { item.startDate }</p>
+                        }),
+                        rowExpandable: record => record.studentCourses.length > 0
+                    } }>
 
                     <Column sorter={ true } title="Ім'я" dataIndex="firstName" key="firstName" />
                     <Column sorter={ true } title="Прізвище" dataIndex="lastName" key="lastName" />
                     <Column sorter={ true } title="Вік" dataIndex="age" key="age" />
                     <Column sorter={ true } title="Дата реєтрації" dataIndex="registerDate" key="registerDate" />
                     <Column sorter={ true } title="Email" dataIndex="email" key="email" />
-                    <Column key="action" render={(text, record) => (
+                    <Column key="action" render={ (text, record) => (
                         <Space size="middle">
-                            <Link to={`/admin/student-info/${record.id}`}>Редагувати</Link>
+                            <Link to={ `/admin/student-info/${record.id}` }>Редагувати</Link>
                         </Space>
-                    )}/>
+                    ) } />
                     {/* <Column title="Registered Date " dataIndex="age" key="age" /> */ }
                 </Table>
                 { isLoading && <Spinner></Spinner> }

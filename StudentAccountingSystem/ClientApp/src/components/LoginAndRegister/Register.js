@@ -10,7 +10,6 @@ class Register extends Component {
 
     render() {
         const onFinish = values => {
-            console.log('Success:', values);
             this.props.register(values);
         };
         const {errors = []} = this.props;
@@ -100,7 +99,6 @@ class Register extends Component {
 }
 
 function mapStateToProps({loginAndRegister}) {
-    console.log("Errors: ", loginAndRegister.errors)
     return {
         loading: loginAndRegister.loading,
         failed: loginAndRegister.registerFailed,

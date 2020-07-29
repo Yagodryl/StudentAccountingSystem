@@ -19,9 +19,7 @@ class ProfilePage extends Component {
             name: 'file',
             action: `api/profile/change-image/${id}`,
             onChange: (info) => {
-                console.log("Info: ", info);
                 if (info.file.status !== 'uploading') {
-                    console.log(info.file, info.fileList);
                 }
                 if (info.file.status === 'done') {
                     window.location.reload(false);
@@ -50,7 +48,6 @@ class ProfilePage extends Component {
 }
 
 const mapStateToProps = ({ profile }) => {
-    console.log(profile);
     return {
         stydentProfile: profile.data,
         isLoading: profile.loading,

@@ -191,10 +191,6 @@ export const register = model => {
             .then(
                 response => {
                     dispatch({ type: REGISTER_POST_SUCCESS });
-                    // loginByJWT(response.data, dispatch);
-                    // const pushUrl = getUrlToRedirect();
-                    // console.log("push", pushUrl)
-                    // dispatch(push(pushUrl));
                 }, err => {
                     throw err;
                 }

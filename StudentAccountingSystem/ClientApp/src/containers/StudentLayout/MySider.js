@@ -20,10 +20,8 @@ class MySider extends Component {
      breakpoint="md"
     collapsedWidth="0"
     onBreakpoint={broken => {
-      console.log(broken);
     }}
     onCollapse={(collapsed, type) => {
-      console.log(collapsed, type);
     }}>
       <Menu theme="light" defaultSelectedKeys={['1']} mode="inline">
       <Menu.Item key="1" icon={<UserOutlined />}>
