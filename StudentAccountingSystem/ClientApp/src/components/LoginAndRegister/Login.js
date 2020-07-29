@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { Form, Input, Button, Row, Alert } from 'antd';
-
 import { MailOutlined, LockOutlined } from '@ant-design/icons';
 import { connect } from "react-redux";
 import Spinner from "../Spinner";
 import * as loginActions from './reducer';
-import { Link } from 'react-router-dom';
 import FacebookLoginForm from './FacebookLoginForm';
 
 class Login extends Component {
@@ -37,13 +35,13 @@ class Login extends Component {
                 >
                     <Form.Item
                         name="email"
-                        rules={ [{ required: true, message: 'Please input your Email!' }, { type: 'email', message: "Incorrect Email!" }] }
+                        rules={ [{ required: true, message: 'Введіть Email!' }, { type: 'email', message: "Не вірний Email!" }] }
                     >
                         <Input prefix={ <MailOutlined className="site-form-item-icon" /> } placeholder="Email" />
                     </Form.Item>
                     <Form.Item
                         name="password"
-                        rules={ [{ required: true, message: 'Please input your Password!' }] }
+                        rules={ [{ required: true, message: 'Введіть пароль!' }] }
                     >
                         <Input
                             prefix={ <LockOutlined className="site-form-item-icon" /> }

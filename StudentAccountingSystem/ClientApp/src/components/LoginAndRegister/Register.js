@@ -53,7 +53,7 @@ class Register extends Component {
                     </Form.Item>
                     <Form.Item
                         name="password"
-                        rules={ [{ required: true, message: 'Please input your Password!' }] }
+                        rules={ [{ required: true, message: 'Введіть ваш пароль!' }] }
                     >
                         <Input
                             prefix={ <LockOutlined className="site-form-item-icon" /> }
@@ -68,14 +68,14 @@ class Register extends Component {
                         rules={ [
                             {
                                 required: true,
-                                message: 'Please confirm your Password!',
+                                message: 'Повторіть пароль!',
                             },
                             ({ getFieldValue }) => ({
                                 validator(rule, value) {
                                     if (!value || getFieldValue('password') === value) {
                                         return Promise.resolve();
                                     }
-                                    return Promise.reject('The two passwords that you entered do not match!');
+                                    return Promise.reject('Паролі не одинакові!');
                                 },
                             }),
                         ] }
